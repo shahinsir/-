@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অফলাইন - শিক্ষা সহায়িকা</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+        .offline-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 500px;
+            color: #333;
+        }
+        h1 {
+            color: #2575fc;
+            margin-bottom: 20px;
+        }
+        .icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+        button {
+            background: #2575fc;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background: #1c6ae4;
+        }
+    </style>
+</head>
+<body>
+    <div class="offline-container">
+        <div class="icon">📶</div>
+        <h1>ইন্টারনেট সংযোগ নেই</h1>
+        <p>আপনি বর্তমানে অফলাইন মোডে আছেন।</p>
+        <p>অ্যাপটির কিছু ফিচার শুধুমাত্র অনলাইনে কাজ করবে।</p>
+        <p>ইন্টারনেট সংযোগ পাওয়া গেলে অ্যাপটি স্বয়ংক্রিয়ভাবে আপডেট হবে।</p>
+        <button onclick="window.location.reload()">রিট্রাই করুন</button>
+        <button onclick="window.location.href='./'" style="background: #6c757d; margin-left: 10px;">হোমে যান</button>
+    </div>
+    <script>
+        // Check for connection every 5 seconds
+        setInterval(() => {
+            if (navigator.onLine) {
+                window.location.href = './';
+            }
+        }, 5000);
+    </script>
+</body>
+</html>

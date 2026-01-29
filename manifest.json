@@ -1,0 +1,51 @@
+{
+  "name": "শিক্ষা সহায়িকা",
+  "short_name": "শিক্ষা সহায়িকা",
+  "description": "ক্লাস ৬-১০ পর্যন্ত সকল বই, গাইড, নোট, ভিডিও এবং ফাইল",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#3498db",
+  "theme_color": "#3498db",
+  "orientation": "portrait",
+  "version": "4.0.0",
+  "version_name": "File Management Update",
+  "icons": [
+    {
+      "src": "https://i.ibb.co/wFnz89n6/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.ibb.co/XGNQ8V4/icon-180x180.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["education", "books", "learning", "utilities"],
+  "lang": "bn-BD",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "scope": "/",
+  "shortcuts": [
+    {
+      "name": "বই ও গাইড",
+      "short_name": "বই",
+      "description": "বই এবং গাইড দেখুন",
+      "url": "/#bookTab"
+    },
+    {
+      "name": "ফাইল ডাউনলোড",
+      "short_name": "ফাইল",
+      "description": "ফাইল ডাউনলোড করুন",
+      "url": "/#fileTab"
+    },
+    {
+      "name": "ভিডিও লেকচার",
+      "short_name": "ভিডিও",
+      "description": "শিক্ষামূলক ভিডিও দেখুন",
+      "url": "/#videoTab"
+    }
+  ]
+}
