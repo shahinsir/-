@@ -1,0 +1,4013 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <base href="./">
+    
+ <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#3498db">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="শিক্ষা সহায়িকা">
+    <meta name="description" content="শিক্ষা সহায়িকা - ক্লাস ৬-১০ পর্যন্ত সকল বই, গাইড, নোট, ভিডিও এবং ফাইল">
+    <meta name="keywords" content="শিক্ষা, বই, গাইড, নোট, ভিডিও, PDF, বাংলাদেশ, ক্লাস ৬-১০">
+    <title>শিক্ষা সহায়িকা</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" href="https://i.ibb.co/XGNQ8V4/icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://i.ibb.co/XGNQ8V4/icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="https://i.ibb.co/XGNQ8V4/icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://i.ibb.co/XGNQ8V4/icon-180x180.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="https://i.ibb.co/XGNQ8V4/icon-180x180.png">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://i.ibb.co/wFnz89n6/icon-192x192.png">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
+    
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --accent-color: #9b59b6;
+            --gradient-primary: linear-gradient(135deg, #3498db, #2980b9);
+            --gradient-success: linear-gradient(135deg, #27ae60, #219653);
+            --gradient-danger: linear-gradient(135deg, #e74c3c, #c0392b);
+            --gradient-accent: linear-gradient(135deg, #9b59b6, #8e44ad);
+            --shadow-light: 0 8px 25px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 10px 30px rgba(0, 0, 0, 0.12);
+            --shadow-heavy: 0 15px 35px rgba(0, 0, 0, 0.2);
+            --border-radius: 16px;
+            --card-radius: 14px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+            line-height: 1.6;
+        }
+        
+        /* App Container */
+        .app-container {
+            max-width: 1400px;
+            margin: 20px auto;
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-heavy);
+            animation: fadeIn 0.5s ease;
+            min-height: 90vh;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Header */
+        .app-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .app-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.1;
+            animation: float 20s linear infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-50px, -50px) rotate(360deg); }
+        }
+        
+        .header-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header-content h1 img {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            border: 4px solid white;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        .header-content .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 8px;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 10px auto;
+            line-height: 1.6;
+        }
+        
+        .app-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .stat-item {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 15px 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            text-align: center;
+            min-width: 120px;
+            transition: var(--transition);
+        }
+        
+        .stat-item:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-5px);
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        /* Auth Container */
+        .auth-container {
+            padding: 50px 30px;
+            display: block;
+            background: #f8fafc;
+        }
+        
+        .content-container {
+            padding: 35px;
+            display: none;
+            background: #f8fafc;
+        }
+        
+        /* Auth Form */
+        .auth-form {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: var(--card-radius);
+            padding: 40px;
+            box-shadow: var(--shadow-light);
+            border: 1px solid #e9ecef;
+            animation: slideInRight 0.6s ease;
+        }
+        
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 40px;
+            border-bottom: 2px solid #eef2f7;
+            gap: 5px;
+        }
+        
+        .auth-tab {
+            flex: 1;
+            padding: 18px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: #718096;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+            font-size: 1.05rem;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .auth-tab:hover {
+            color: var(--primary-color);
+            background: #f8fafc;
+        }
+        
+        .auth-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            background: linear-gradient(to bottom, rgba(52, 152, 219, 0.05), transparent);
+        }
+        
+        .auth-form-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .auth-form-section.active {
+            display: block;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .form-group label i {
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: #f8fafc;
+            font-family: inherit;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+        }
+        
+        .form-group input.valid {
+            border-color: var(--success-color);
+        }
+        
+        .form-group input.invalid {
+            border-color: var(--danger-color);
+        }
+        
+        .form-helper {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            color: #718096;
+        }
+        
+        .form-helper.valid {
+            color: var(--success-color);
+        }
+        
+        .form-helper.invalid {
+            color: var(--danger-color);
+        }
+        
+        .password-strength {
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        
+        .strength-meter {
+            height: 100%;
+            width: 0%;
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+        
+        .strength-weak { width: 25%; background: var(--danger-color); }
+        .strength-fair { width: 50%; background: var(--warning-color); }
+        .strength-good { width: 75%; background: #3498db; }
+        .strength-strong { width: 100%; background: var(--success-color); }
+        
+        /* Buttons */
+        .btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1.05rem;
+            font-weight: 600;
+            width: 100%;
+            transition: var(--transition);
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.25);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.35);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn-success {
+            background: var(--gradient-success);
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.25);
+        }
+        
+        .btn-success:hover {
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.35);
+        }
+        
+        .btn-accent {
+            background: var(--gradient-accent);
+            box-shadow: 0 4px 12px rgba(155, 89, 182, 0.25);
+        }
+        
+        .btn-accent:hover {
+            box-shadow: 0 8px 20px rgba(155, 89, 182, 0.35);
+        }
+        
+        .logout-btn {
+            background: var(--gradient-danger);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.2);
+        }
+        
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .btn-icon {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        
+        .btn-icon:hover {
+            background: #f8fafc;
+            transform: scale(1.1);
+        }
+        
+        /* User Info */
+        .user-info {
+            background: white;
+            padding: 25px;
+            border-radius: var(--card-radius);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 2px solid var(--primary-color);
+            box-shadow: var(--shadow-light);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .user-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+        
+        .user-details {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .user-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 8px 16px rgba(52, 152, 219, 0.3);
+            border: 3px solid white;
+            position: relative;
+        }
+        
+        .user-avatar::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border-radius: 50%;
+            border: 2px solid rgba(52, 152, 219, 0.3);
+        }
+        
+        .user-text {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .user-name {
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--secondary-color);
+        }
+        
+        .user-email {
+            color: #718096;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .user-badge {
+            display: inline-block;
+            background: var(--gradient-success);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #eef2f7;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 2px;
+            background: white;
+            padding: 10px 10px 0;
+            border-radius: 12px;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .tab {
+            padding: 18px 25px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #718096;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+        }
+        
+        .tab:hover {
+            color: var(--primary-color);
+            background: #f8fafc;
+        }
+        
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            background: linear-gradient(to bottom, rgba(52, 152, 219, 0.05), transparent);
+        }
+        
+        .tab-badge {
+            background: var(--danger-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-left: 5px;
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Class Grid */
+        .class-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        .class-card {
+            background: white;
+            border-radius: var(--card-radius);
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .class-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-primary);
+        }
+        
+        .class-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--primary-color);
+        }
+        
+        .class-card .class-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            display: block;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        }
+        
+        .class-card h3 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .class-card p {
+            color: #718096;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        
+        .class-stats {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: #718096;
+        }
+        
+        .class-stat {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Material Items */
+        .material-item {
+            background: white;
+            border-radius: var(--card-radius);
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 6px solid var(--primary-color);
+            box-shadow: var(--shadow-light);
+            border: 1px solid #e9ecef;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .material-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.05), transparent);
+            border-radius: 0 0 0 100%;
+        }
+        
+        .material-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        .material-item.featured {
+            border-color: var(--warning-color);
+            background: linear-gradient(to right, #fffaf0, white);
+        }
+        
+        .material-item h4 {
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+        
+        .material-type {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-right: 10px;
+            border: 1px solid transparent;
+        }
+        
+        .material-type.book { background: #e3f2fd; color: #1976d2; border-color: #bbdefb; }
+        .material-type.guide { background: #e8f5e9; color: #388e3c; border-color: #c8e6c9; }
+        .material-type.note { background: #fff3e0; color: #f57c00; border-color: #ffe0b2; }
+        .material-type.video { background: #f3e5f5; color: #7b1fa2; border-color: #e1bee7; }
+        .material-type.image { background: #e0f7fa; color: #0097a7; border-color: #b2ebf2; }
+        .material-type.pdf { background: #ffebee; color: #d32f2f; border-color: #ffcdd2; }
+        .material-type.question { background: #fce4ec; color: #c2185b; border-color: #f8bbd9; }
+        .material-type.mcq { background: #f3e5f5; color: #7b1fa2; border-color: #e1bee7; }
+        
+        .material-meta {
+            display: flex;
+            gap: 25px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #718096;
+            flex-wrap: wrap;
+        }
+        
+        .material-meta span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .material-tags {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .material-tag {
+            background: #f8fafc;
+            color: #718096;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* File Actions */
+        .file-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .view-btn, .download-btn, .open-btn, .preview-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 120px;
+            justify-content: center;
+        }
+        
+        .view-btn { 
+            background: var(--gradient-success); 
+            color: white; 
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.2);
+        }
+        
+        .download-btn { 
+            background: var(--gradient-primary); 
+            color: white; 
+            box-shadow: 0 4px 10px rgba(52, 152, 219, 0.2);
+        }
+        
+        .open-btn { 
+            background: var(--gradient-warning); 
+            color: white; 
+            box-shadow: 0 4px 10px rgba(243, 156, 18, 0.2);
+        }
+        
+        .preview-btn { 
+            background: var(--gradient-accent); 
+            color: white; 
+            box-shadow: 0 4px 10px rgba(155, 89, 182, 0.2);
+        }
+        
+        .view-btn:hover { 
+            background: linear-gradient(135deg, #219653, #27ae60);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(39, 174, 96, 0.3);
+        }
+        
+        .download-btn:hover { 
+            background: linear-gradient(135deg, #2980b9, #3498db);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .open-btn:hover { 
+            background: linear-gradient(135deg, #d68910, #f39c12);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(243, 156, 18, 0.3);
+        }
+        
+        .preview-btn:hover { 
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(155, 89, 182, 0.3);
+        }
+        
+        /* File Type Badges */
+        .file-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 8px;
+        }
+        
+        .file-type-pdf { background: #ffebee; color: #d32f2f; border: 1px solid #ffcdd2; }
+        .file-type-image { background: #e8f5e9; color: #388e3c; border: 1px solid #c8e6c9; }
+        .file-type-video { background: #f3e5f5; color: #7b1fa2; border: 1px solid #e1bee7; }
+        .file-type-doc { background: #e3f2fd; color: #1976d2; border: 1px solid #bbdefb; }
+        .file-type-zip { background: #fff3e0; color: #f57c00; border: 1px solid #ffe0b2; }
+        .file-type-other { background: #f5f5f5; color: #616161; border: 1px solid #e0e0e0; }
+        
+        /* Search */
+        .search-container {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 18px 60px 18px 25px;
+            border: 2px solid #e2e8f0;
+            border-radius: 15px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: white;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .search-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1), var(--shadow-light);
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+        
+        .search-filters {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-select {
+            padding: 10px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
+            font-size: 0.9rem;
+            color: #718096;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .filter-select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--primary-color);
+        }
+        
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--primary-color);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #718096;
+            background: white;
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow-light);
+            margin: 20px 0;
+        }
+        
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.3;
+        }
+        
+        /* Back Button */
+        .back-btn {
+            background: #718096;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            box-shadow: 0 4px 10px rgba(113, 128, 150, 0.2);
+        }
+        
+        .back-btn:hover {
+            background: #4a5568;
+            transform: translateX(-5px);
+            box-shadow: 0 6px 15px rgba(113, 128, 150, 0.3);
+        }
+        
+        /* Subject Cards */
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        .subject-card {
+            background: white;
+            border-radius: var(--card-radius);
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: var(--shadow-light);
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-accent);
+        }
+        
+        .subject-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--accent-color);
+        }
+        
+        .subject-card .subject-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            display: block;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        }
+        
+        .subject-card h3 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        .subject-card p {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+        
+        .subject-count {
+            display: inline-block;
+            background: #f8fafc;
+            color: #718096;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            border: 1px solid #e2e8f0;
+        }
+        
+        /* File Preview */
+        .file-preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin: 15px 0;
+            border-radius: 10px;
+            box-shadow: var(--shadow-light);
+            border: 2px solid #e2e8f0;
+        }
+        
+        /* PWA Install Button */
+        .pwa-section {
+            text-align: center;
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-radius: var(--card-radius);
+            border: 2px dashed var(--primary-color);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .install-btn {
+            background: var(--gradient-accent);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin: 15px 0;
+            transition: var(--transition);
+            box-shadow: 0 6px 15px rgba(155, 89, 182, 0.25);
+        }
+        
+        .install-btn:hover {
+            background: linear-gradient(135deg, #8e44ad, #9b59b6);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(155, 89, 182, 0.35);
+        }
+        
+        /* Status Messages */
+        .status-message {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            padding: 20px 30px;
+            border-radius: 12px;
+            color: white;
+            z-index: 9999;
+            display: none;
+            animation: slideDown 0.3s ease;
+            box-shadow: var(--shadow-medium);
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .status-success {
+            background: linear-gradient(135deg, rgba(39, 174, 96, 0.95), rgba(33, 150, 83, 0.95));
+        }
+        
+        .status-error {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.95), rgba(192, 57, 43, 0.95));
+        }
+        
+        .status-warning {
+            background: linear-gradient(135deg, rgba(243, 156, 18, 0.95), rgba(214, 137, 16, 0.95));
+        }
+        
+        .status-info {
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.95), rgba(41, 128, 185, 0.95));
+        }
+        
+        .status-message-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .status-icon {
+            font-size: 1.8rem;
+        }
+        
+        /* File Section */
+        .file-section {
+            background: white;
+            padding: 30px;
+            border-radius: var(--card-radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-light);
+            border: 1px solid #e9ecef;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .section-title {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        /* Dark Mode Toggle */
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            box-shadow: var(--shadow-medium);
+            transition: var(--transition);
+        }
+        
+        .dark-mode-toggle:hover {
+            transform: scale(1.1) rotate(30deg);
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-heavy);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+            
+            .class-grid, .subject-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .app-container {
+                margin: 10px;
+                border-radius: 12px;
+            }
+            
+            .app-header {
+                padding: 25px 20px;
+            }
+            
+            .header-content h1 {
+                font-size: 2rem;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .tabs {
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 5px;
+            }
+            
+            .tab {
+                white-space: nowrap;
+                padding: 15px 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .class-grid, .subject-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .app-header {
+                padding: 20px 15px;
+            }
+            
+            .header-content h1 {
+                font-size: 1.7rem;
+            }
+            
+            .header-content h1 img {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .stat-item {
+                min-width: 100px;
+                padding: 12px 15px;
+            }
+            
+            .auth-form {
+                padding: 25px 20px;
+            }
+            
+            .content-container {
+                padding: 20px;
+            }
+            
+            .user-info {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .user-details {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+        
+        /* Touch Optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .btn, .view-btn, .download-btn, .open-btn, .logout-btn {
+                min-height: 50px;
+                min-width: 50px;
+                padding: 16px;
+            }
+            
+            input, select, textarea, button {
+                font-size: 16px !important;
+            }
+            
+            .material-item, .class-card, .subject-card {
+                padding: 25px 20px;
+            }
+        }
+        
+        /* PWA Status */
+        .pwa-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--gradient-success);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            z-index: 9998;
+            display: none;
+            animation: pulse 2s infinite;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+            border: 2px solid white;
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .quick-action-btn {
+            padding: 15px 25px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+            color: var(--secondary-color);
+            transition: var(--transition);
+            flex: 1;
+            min-width: 200px;
+            justify-content: center;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .quick-action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-medium);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        /* Rating */
+        .rating {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        
+        .rating-star {
+            color: #ffd700;
+            font-size: 1.2rem;
+        }
+        
+        /* Featured Content */
+        .featured-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: var(--card-radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-medium);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .featured-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.2;
+        }
+        
+        .featured-badge {
+            background: var(--warning-color);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            position: absolute;
+            z-index: 1000;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+            box-shadow: var(--shadow-light);
+        }
+        
+        .tooltip .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: var(--secondary-color) transparent transparent transparent;
+        }
+        
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: white;
+            border-radius: var(--card-radius);
+            box-shadow: var(--shadow-light);
+        }
+        
+        .breadcrumb-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #718096;
+        }
+        
+        .breadcrumb-item.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .breadcrumb-separator {
+            color: #cbd5e0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Dark Mode Toggle -->
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" title="ডার্ক মোড">
+        🌙
+    </button>
+    
+    <!-- PWA Status -->
+    <div class="pwa-status" id="pwaStatus">📱 ইনস্টল করা</div>
+    
+    <!-- Status Message -->
+    <div id="statusMessage" class="status-message">
+        <div class="status-message-content">
+            <span class="status-icon" id="statusIcon">✅</span>
+            <span id="statusText"></span>
+        </div>
+    </div>
+    
+    <!-- Modal -->
+    <div id="modalOverlay" class="modal-overlay" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div id="modalContent"></div>
+        </div>
+    </div>
+    
+    <!-- App Container -->
+    <div class="app-container">
+        <!-- Header -->
+        <div class="app-header">
+            <div class="header-content">
+                <h1>
+                    <img src="https://i.ibb.co/wFnz89n6/icon-192x192.png" alt="আইকন">
+                    শিক্ষা সহায়িকা
+                </h1>
+                <div class="subtitle">ক্লাস ৬-১০ পর্যন্ত সকল বই, গাইড, নোট, ভিডিও, MCQ এবং ফাইল ডাউনলোড</div>
+                
+                <div class="app-stats">
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalFiles">0</span>
+                        <span class="stat-label">ফাইল</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalBooks">0</span>
+                        <span class="stat-label">বই</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalVideos">0</span>
+                        <span class="stat-label">ভিডিও</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="activeUsers">0</span>
+                        <span class="stat-label">ব্যবহারকারী</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Auth Section -->
+        <div id="authSection" class="auth-container">
+            <div class="auth-form">
+                <h2 style="text-align: center; margin-bottom: 30px; color: var(--secondary-color); font-size: 1.8rem; display: flex; align-items: center; justify-content: center; gap: 15px;">
+                    <span>🔐</span>
+                    অ্যাকাউন্ট ম্যানেজমেন্ট
+                </h2>
+                
+                <!-- Message Display -->
+                <div id="authMessage" style="display: none; padding: 18px; border-radius: 12px; margin-bottom: 25px; text-align: center; font-weight: 600; border: 2px solid transparent;"></div>
+                
+                <!-- Tabs -->
+                <div class="auth-tabs">
+                    <div id="loginTab" class="auth-tab active" onclick="showAuthForm('login')">
+                        <span>🔑</span> লগইন করুন
+                    </div>
+                    <div id="registerTab" class="auth-tab" onclick="showAuthForm('register')">
+                        <span>📝</span> রেজিস্টার করুন
+                    </div>
+                </div>
+                
+                <!-- Login Form -->
+                <div id="loginForm" class="auth-form-section active">
+                    <div class="form-group">
+                        <label>
+                            <span>📧</span>
+                            ইমেইল অথবা ইউজারনেম:
+                        </label>
+                        <input type="text" id="loginEmailUsername" placeholder="ইমেইল বা ইউজারনেম দিন" autocomplete="username">
+                        <div class="form-helper">
+                            <span>👤</span>
+                            রেজিস্টার করা ইউজারনেম বা ইমেইল দিন
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <span>🔒</span>
+                            পাসওয়ার্ড:
+                        </label>
+                        <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড দিন" autocomplete="current-password">
+                        <div class="form-helper">
+                            <span>ℹ️</span>
+                            ৬ অক্ষরের বেশি পাসওয়ার্ড দিন
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="rememberMe" style="width: auto;">
+                            <span>মনে রাখুন</span>
+                        </label>
+                        <a onclick="showForgotPassword()" style="color: var(--primary-color); cursor: pointer; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 5px;">
+                            <span>🔓</span>
+                            পাসওয়ার্ড ভুলে গেছেন?
+                        </a>
+                    </div>
+                    
+                    <button onclick="loginUser()" class="btn" id="loginBtn">
+                        <span>🚀</span>
+                        লগইন করুন
+                    </button>
+                    
+                    <div style="text-align: center; margin-top: 25px; padding-top: 25px; border-top: 2px solid #eef2f7;">
+                        <p style="color: #718096; margin-bottom: 15px;">অথবা দিয়ে লগইন করুন</p>
+                        <div style="display: flex; gap: 15px; justify-content: center;">
+                            <button onclick="showStatus('শীঘ্রই আসছে...', 'info')" class="btn-icon" style="font-size: 1.5rem;">
+                                <span>📱</span>
+                            </button>
+                            <button onclick="showStatus('শীঘ্রই আসছে...', 'info')" class="btn-icon" style="font-size: 1.5rem;">
+                                <span>📧</span>
+                            </button>
+                            <button onclick="showStatus('শীঘ্রই আসছে...', 'info')" class="btn-icon" style="font-size: 1.5rem;">
+                                <span>🔑</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Register Form -->
+                <div id="registerForm" class="auth-form-section">
+                    <div class="form-group">
+                        <label>
+                            <span>👤</span>
+                            ইউজারনেম:
+                        </label>
+                        <input type="text" id="registerUsername" placeholder="নতুন ইউজারনেম" autocomplete="username" oninput="validateUsername()">
+                        <div class="form-helper" id="usernameHelper">
+                            <span>ℹ️</span>
+                            কমপক্ষে ৩ অক্ষর, শুধু অক্ষর ও সংখ্যা
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <span>📧</span>
+                            ইমেইল:
+                        </label>
+                        <input type="email" id="registerEmail" placeholder="ইমেইল ঠিকানা" autocomplete="email" oninput="validateEmail()">
+                        <div class="form-helper" id="emailHelper">
+                            <span>ℹ️</span>
+                            বৈধ ইমেইল ঠিকানা দিন
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <span>🔒</span>
+                            পাসওয়ার্ড:
+                        </label>
+                        <input type="password" id="registerPassword" placeholder="পাসওয়ার্ড (৬+ অক্ষর)" autocomplete="new-password" oninput="checkPasswordStrength()">
+                        <div class="password-strength">
+                            <div class="strength-meter" id="passwordStrength"></div>
+                        </div>
+                        <div class="form-helper" id="passwordHelper">
+                            <span>ℹ️</span>
+                            পাসওয়ার্ড শক্তি: দুর্বল
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <span>✅</span>
+                            পাসওয়ার্ড নিশ্চিত করুন:
+                        </label>
+                        <input type="password" id="registerConfirmPassword" placeholder="পাসওয়ার্ড আবার দিন" autocomplete="new-password" oninput="confirmPassword()">
+                        <div class="form-helper" id="confirmPasswordHelper">
+                            <span>ℹ️</span>
+                            পাসওয়ার্ড মিলছে কিনা নিশ্চিত করুন
+                        </div>
+                    </div>
+                    
+                    <div style="margin: 25px 0;">
+                        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                            <input type="checkbox" id="agreeTerms" style="width: auto;">
+                            <span>আমি <a onclick="showTerms()" style="color: var(--primary-color); cursor: pointer;">সেবা শর্তাবলী</a> এবং <a onclick="showPrivacy()" style="color: var(--primary-color); cursor: pointer;">গোপনীয়তা নীতি</a> মেনে চলতে সম্মত</span>
+                        </label>
+                    </div>
+                    
+                    <button onclick="registerUser()" class="btn btn-success" id="registerBtn">
+                        <span>✨</span>
+                        রেজিস্টার করুন
+                    </button>
+                </div>
+                
+                <!-- Forgot Password Modal -->
+                <div id="forgotPasswordModal" style="display: none; margin-top: 25px; padding: 25px; background: #f8fafc; border-radius: 15px; border: 2px solid var(--primary-color); box-shadow: var(--shadow-light);">
+                    <h4 style="color: var(--secondary-color); margin-bottom: 20px; display: flex; align-items: center; gap: 10px; font-size: 1.2rem;">
+                        <span>🔓</span>
+                        পাসওয়ার্ড রিসেট করুন
+                    </h4>
+                    <div class="form-group">
+                        <label>
+                            <span>👤</span>
+                            ইউজারনেম অথবা ইমেইল:
+                        </label>
+                        <input type="text" id="forgotEmailUsername" placeholder="আপনার ইউজারনেম বা ইমেইল">
+                    </div>
+                    <div class="form-helper" style="margin-bottom: 20px;">
+                        <span>ℹ️</span>
+                        রেজিস্টার করা ইউজারনেম অথবা ইমেইল দিন। পাসওয়ার্ড রিসেট লিঙ্ক আপনার ইমেইলে পাঠানো হবে।
+                    </div>
+                    <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                        <button onclick="resetPassword()" class="btn" style="flex: 1; min-width: 150px;">
+                            <span>📧</span>
+                            রিসেট লিংক পাঠান
+                        </button>
+                        <button onclick="hideForgotPassword()" class="btn" style="background: #718096; flex: 1; min-width: 150px;">
+                            <span>❌</span>
+                            বাতিল করুন
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Content Section -->
+        <div id="contentSection" class="content-container">
+            <!-- User Info -->
+            <div class="user-info">
+                <div class="user-details">
+                    <div class="user-avatar" id="userAvatar">U</div>
+                    <div class="user-text">
+                        <div class="user-name" id="userNameDisplay"></div>
+                        <div class="user-email" id="userEmailDisplay"></div>
+                        <div style="margin-top: 5px;">
+                            <span class="user-badge" id="userBadge">সাধারণ ব্যবহারকারী</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <button onclick="showProfile()" class="btn-icon tooltip" title="প্রোফাইল">
+                        <span>👤</span>
+                    </button>
+                    <button onclick="showSettings()" class="btn-icon tooltip" title="সেটিংস">
+                        <span>⚙️</span>
+                    </button>
+                    <button onclick="showHelp()" class="btn-icon tooltip" title="সহায়তা">
+                        <span>❓</span>
+                    </button>
+                    <button onclick="logoutUser()" class="logout-btn">
+                        <span>🚪</span>
+                        লগআউট
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <button onclick="switchTab('contentTab')" class="quick-action-btn">
+                    <span>📚</span>
+                    সব কন্টেন্ট
+                </button>
+                <button onclick="switchTab('bookTab')" class="quick-action-btn">
+                    <span>📖</span>
+                    বই ও গাইড
+                </button>
+                <button onclick="switchTab('videoTab')" class="quick-action-btn">
+                    <span>🎬</span>
+                    ভিডিও লেকচার
+                </button>
+                <button onclick="switchTab('fileTab')" class="quick-action-btn">
+                    <span>📁</span>
+                    সব ফাইল
+                </button>
+            </div>
+            
+            <!-- Tabs -->
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('contentTab')">
+                    <span>📚</span>
+                    কন্টেন্ট
+                    <span class="tab-badge" id="contentBadge">0</span>
+                </button>
+                <button class="tab" onclick="switchTab('fileTab')">
+                    <span>📁</span>
+                    ফাইল
+                    <span class="tab-badge" id="fileBadge">0</span>
+                </button>
+                <button class="tab" onclick="switchTab('bookTab')">
+                    <span>📖</span>
+                    বই ও গাইড
+                    <span class="tab-badge" id="bookBadge">0</span>
+                </button>
+                <button class="tab" onclick="switchTab('videoTab')">
+                    <span>🎬</span>
+                    ভিডিও
+                    <span class="tab-badge" id="videoBadge">0</span>
+                </button>
+                <button class="tab" onclick="switchTab('mcqTab')">
+                    <span>🔠</span>
+                    MCQ প্রশ্ন
+                    <span class="tab-badge" id="mcqBadge">0</span>
+                </button>
+            </div>
+            
+            <!-- Content Tab -->
+            <div id="contentTab" class="tab-content active">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb" id="contentBreadcrumb">
+                    <div class="breadcrumb-item active">
+                        <span>🏠</span>
+                        হোম
+                    </div>
+                </div>
+                
+                <div class="search-container">
+                    <input type="text" id="searchContent" class="search-input" placeholder="🔍 বই, গাইড, নোট বা MCQ অনুসন্ধান করুন...">
+                    <button class="search-icon" onclick="searchContent()">
+                        🔍
+                    </button>
+                    
+                    <div class="search-filters">
+                        <select id="contentTypeFilter" class="filter-select" onchange="filterContent()">
+                            <option value="all">সব ধরন</option>
+                            <option value="book">বই</option>
+                            <option value="guide">গাইড</option>
+                            <option value="note">নোট</option>
+                            <option value="mcq">MCQ</option>
+                            <option value="video">ভিডিও</option>
+                        </select>
+                        
+                        <select id="contentClassFilter" class="filter-select" onchange="filterContent()">
+                            <option value="all">সব ক্লাস</option>
+                            <option value="6">ক্লাস ৬</option>
+                            <option value="7">ক্লাস ৭</option>
+                            <option value="8">ক্লাস ৮</option>
+                            <option value="9">ক্লাস ৯</option>
+                            <option value="10">ক্লাস ১০</option>
+                        </select>
+                        
+                        <select id="contentSubjectFilter" class="filter-select" onchange="filterContent()">
+                            <option value="all">সব বিষয়</option>
+                            <option value="math">গণিত</option>
+                            <option value="english">ইংরেজি</option>
+                            <option value="science">বিজ্ঞান</option>
+                            <option value="ict">ICT</option>
+                            <option value="agriculture">কৃষি</option>
+                        </select>
+                        
+                        <select id="contentSort" class="filter-select" onchange="filterContent()">
+                            <option value="newest">নতুন থেকে পুরাতন</option>
+                            <option value="oldest">পুরাতন থেকে নতুন</option>
+                            <option value="popular">জনপ্রিয়</option>
+                            <option value="name">নাম অনুসারে</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- Featured Content -->
+                <div class="featured-content" id="featuredContent" style="display: none;">
+                    <div class="featured-badge">
+                        ⭐ ফিচার্ড
+                    </div>
+                    <h3 id="featuredTitle" style="margin-bottom: 15px; font-size: 1.5rem;"></h3>
+                    <p id="featuredDescription" style="margin-bottom: 20px; opacity: 0.9;"></p>
+                    <button onclick="openFeatured()" class="btn" style="background: white; color: #764ba2; font-weight: 600;">
+                        <span>🚀</span>
+                        এখনই দেখুন
+                    </button>
+                </div>
+                
+                <!-- Class Selection -->
+                <div id="classSection">
+                    <h2 style="text-align: center; margin: 30px 0; color: var(--secondary-color); font-size: 1.8rem; display: flex; align-items: center; justify-content: center; gap: 15px;">
+                        <span>👉</span>
+                        ক্লাস নির্বাচন করুন
+                    </h2>
+                    <div id="classGrid" class="class-grid">
+                        <!-- Classes will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Subject Selection -->
+                <div id="subjectSection" style="display: none;">
+                    <button onclick="goBackToClasses()" class="back-btn">
+                        <span>←</span>
+                        ক্লাস সিলেকশনে ফিরে যান
+                    </button>
+                    <h2 id="classNameDisplay" style="margin: 25px 0; color: var(--secondary-color); font-size: 1.6rem; display: flex; align-items: center; gap: 15px;"></h2>
+                    <div id="subjectGrid" class="subject-grid">
+                        <!-- Subjects will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Materials Display -->
+                <div id="materialsSection" style="display: none;">
+                    <button onclick="goBackToSubjects()" class="back-btn">
+                        <span>←</span>
+                        বিষয় সিলেকশনে ফিরে যান
+                    </button>
+                    <h2 id="subjectNameDisplay" style="margin: 25px 0; color: var(--secondary-color); font-size: 1.6rem; display: flex; align-items: center; gap: 15px;"></h2>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="materialProgress" style="width: 0%"></div>
+                    </div>
+                    <div style="text-align: center; margin: 10px 0; color: #718096; font-size: 0.9rem;">
+                        লোডিং: <span id="materialCount">0</span>/<span id="totalMaterials">0</span>
+                    </div>
+                    
+                    <div id="materialsList">
+                        <!-- Materials will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- File Tab -->
+            <div id="fileTab" class="tab-content">
+                <div class="file-section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <span>📁</span>
+                            ফাইল সংগ্রহ
+                        </h3>
+                        <div class="section-actions">
+                            <button onclick="refreshFiles()" class="btn-icon" title="রিফ্রেশ">
+                                <span>🔄</span>
+                            </button>
+                            <button onclick="showUploadModal()" class="btn-icon" title="ফাইল আপলোড">
+                                <span>📤</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="search-container">
+                        <input type="text" id="searchFiles" class="search-input" placeholder="🔍 ফাইল নাম, বিষয় বা বর্ণনা অনুসন্ধান করুন...">
+                        <button class="search-icon" onclick="searchFiles()">
+                            🔍
+                        </button>
+                    </div>
+                    
+                    <div id="filesLoading" class="loading">
+                        <div class="loading-spinner"></div>
+                        <p>ফাইল লোড হচ্ছে...</p>
+                        <p style="font-size: 0.9rem; color: #718096; margin-top: 10px;">অনুগ্রহ করে অপেক্ষা করুন</p>
+                    </div>
+                    
+                    <div id="filesList">
+                        <!-- Files will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Book Tab -->
+            <div id="bookTab" class="tab-content">
+                <div class="file-section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <span>📖</span>
+                            বই ও গাইড সংগ্রহ
+                        </h3>
+                        <div class="section-actions">
+                            <button onclick="showBookCategories()" class="btn-icon" title="বিষয়বস্তু">
+                                <span>📂</span>
+                            </button>
+                            <button onclick="showRecommendations()" class="btn-icon" title="সুপারিশ">
+                                <span>⭐</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="booksList">
+                        <!-- Books will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Video Tab -->
+            <div id="videoTab" class="tab-content">
+                <div class="file-section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <span>🎬</span>
+                            শিক্ষামূলক ভিডিও
+                        </h3>
+                        <div class="section-actions">
+                            <button onclick="showPlaylists()" class="btn-icon" title="প্লেলিস্ট">
+                                <span>📺</span>
+                            </button>
+                            <button onclick="showVideoCategories()" class="btn-icon" title="ক্যাটাগরি">
+                                <span>🎥</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="videosList">
+                        <!-- Videos will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- MCQ Tab -->
+            <div id="mcqTab" class="tab-content">
+                <div class="file-section">
+                    <div class="section-header">
+                        <h3 class="section-title">
+                            <span>🔠</span>
+                            MCQ প্রশ্নব্যাংক
+                        </h3>
+                        <div class="section-actions">
+                            <button onclick="startQuiz()" class="btn btn-success" style="padding: 12px 24px;">
+                                <span>🚀</span>
+                                কুইজ শুরু করুন
+                            </button>
+                            <button onclick="downloadMCQ()" class="btn-icon" title="ডাউনলোড">
+                                <span>📥</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="mcqList">
+                        <!-- MCQs will be loaded here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PWA Install Button -->
+            <div class="pwa-section">
+                <h3 style="color: var(--secondary-color); margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 15px; font-size: 1.5rem;">
+                    <span>📱</span>
+                    অ্যাপ ইনস্টল করুন
+                </h3>
+                <p style="color: #718096; margin-bottom: 25px; max-width: 600px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+                    হোমস্ক্রিনে যুক্ত করে ফুল-স্ক্রিন মোডে ব্যবহার করুন, অফলাইন অ্যাক্সেস পান এবং দ্রুত লোডিং উপভোগ করুন।
+                </p>
+                <button id="installButton" class="install-btn">
+                    <span>📲</span>
+                    অ্যাপ ইনস্টল করুন
+                </button>
+                <div style="margin-top: 25px; display: flex; justify-content: center; gap: 30px; flex-wrap: wrap;">
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">⚡</div>
+                        <div style="font-weight: 600; color: var(--secondary-color);">দ্রুত লোড</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">📶</div>
+                        <div style="font-weight: 600; color: var(--secondary-color);">অফলাইন এক্সেস</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🔔</div>
+                        <div style="font-weight: 600; color: var(--secondary-color);">নোটিফিকেশন</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =================== APP CONFIGURATION ===================
+        const APP_VERSION = '5.0.0';
+        const APP_NAME = 'শিক্ষা সহায়িকা';
+        
+        // =================== FIREBASE CONFIGURATION ===================
+        const firebaseConfig = {
+            apiKey: "AIzaSyB1vOW-DY6zIkXhPK5CRF3N8w-LzUKsvgg",
+            authDomain: "education-app-8931d.firebaseapp.com",
+            databaseURL: "https://education-app-8931d-default-rtdb.firebaseio.com",
+            projectId: "education-app-8931d",
+            storageBucket: "education-app-8931d.firebasestorage.app",
+            messagingSenderId: "667995018685",
+            appId: "1:667995018685:web:c8cdc1d432748cdc98eed4"
+        };
+        
+        // =================== GLOBAL VARIABLES ===================
+        let db;
+        let auth;
+        let storage;
+        let currentUser = null;
+        let currentClass = null;
+        let currentSubject = null;
+        let deferredPrompt = null;
+        let isAppInstalled = false;
+        let isDarkMode = false;
+        let allMaterials = [];
+        let allFiles = [];
+        let allBooks = [];
+        let allVideos = [];
+        let allMCQs = [];
+        
+        // =================== INITIALIZE FIREBASE ===================
+        function initializeFirebase() {
+            try {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.database();
+                auth = firebase.auth();
+                storage = firebase.storage();
+                console.log("✅ Firebase initialized successfully");
+                setupAuth();
+                setupServiceWorker();
+                loadAppStats();
+            } catch (error) {
+                console.error("❌ Firebase initialization error:", error);
+                showStatus("Firebase সংযোগ ব্যর্থ", "error");
+            }
+        }
+        
+        // =================== APP STATS ===================
+        function loadAppStats() {
+            if (!db) return;
+            
+            // Load total files count
+            db.ref('files').once('value').then(snapshot => {
+                const count = snapshot.exists() ? snapshot.numChildren() : 0;
+                document.getElementById('totalFiles').textContent = count;
+                document.getElementById('fileBadge').textContent = count;
+            });
+            
+            // Load total books count
+            db.ref('materials').orderByChild('type').once('value').then(snapshot => {
+                let bookCount = 0;
+                let videoCount = 0;
+                let mcqCount = 0;
+                
+                if (snapshot.exists()) {
+                    snapshot.forEach(child => {
+                        const type = child.val().type;
+                        if (type === 'বই' || type === 'গাইড') bookCount++;
+                        if (type === 'ভিডিও') videoCount++;
+                        if (type === 'MCQ' || type === 'প্রশ্ন') mcqCount++;
+                    });
+                }
+                
+                document.getElementById('totalBooks').textContent = bookCount;
+                document.getElementById('bookBadge').textContent = bookCount;
+                document.getElementById('totalVideos').textContent = videoCount;
+                document.getElementById('videoBadge').textContent = videoCount;
+                document.getElementById('mcqBadge').textContent = mcqCount;
+            });
+            
+            // Load active users count (simplified)
+            db.ref('users').once('value').then(snapshot => {
+                const count = snapshot.exists() ? snapshot.numChildren() : 0;
+                document.getElementById('activeUsers').textContent = count;
+            });
+        }
+        
+        // =================== DARK MODE ===================
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode', isDarkMode);
+            
+            // Save preference to localStorage
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            showStatus(isDarkMode ? "ডার্ক মোড চালু হয়েছে 🌙" : "লাইট মোড চালু হয়েছে ☀️", "info");
+        }
+        
+        // =================== MODAL FUNCTIONS ===================
+        function showModal(content) {
+            document.getElementById('modalContent').innerHTML = content;
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+        
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+        
+        function showProfile() {
+            const content = `
+                <h3 style="color: var(--secondary-color); margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
+                    <span>👤</span>
+                    ব্যবহারকারী প্রোফাইল
+                </h3>
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <div class="user-avatar" style="width: 100px; height: 100px; font-size: 40px; margin: 0 auto 20px;">
+                        ${currentUser ? currentUser.email.charAt(0).toUpperCase() : 'U'}
+                    </div>
+                    <h4 id="modalUserName" style="font-size: 1.4rem; color: var(--secondary-color); margin-bottom: 10px;"></h4>
+                    <p id="modalUserEmail" style="color: #718096;"></p>
+                </div>
+                <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+                    <h5 style="color: var(--secondary-color); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                        <span>📊</span>
+                        ব্যবহারকারী পরিসংখ্যান
+                    </h5>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.8rem; color: var(--primary-color); font-weight: bold;" id="modalDownloads">0</div>
+                            <div style="color: #718096; font-size: 0.9rem;">ডাউনলোড</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.8rem; color: var(--success-color); font-weight: bold;" id="modalViews">0</div>
+                            <div style="color: #718096; font-size: 0.9rem;">দেখা হয়েছে</div>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="btn" style="margin-top: 20px;">
+                    <span>✅</span>
+                    ঠিক আছে
+                </button>
+            `;
+            showModal(content);
+            
+            // Load user data
+            if (currentUser && db) {
+                db.ref('users/' + currentUser.uid).once('value').then(snapshot => {
+                    const userData = snapshot.val();
+                    if (userData) {
+                        document.getElementById('modalUserName').textContent = userData.username || currentUser.email.split('@')[0];
+                        document.getElementById('modalUserEmail').textContent = currentUser.email;
+                        document.getElementById('modalDownloads').textContent = userData.downloads || 0;
+                        document.getElementById('modalViews').textContent = userData.views || 0;
+                    }
+                });
+            }
+        }
+        
+        function showSettings() {
+            const content = `
+                <h3 style="color: var(--secondary-color); margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
+                    <span>⚙️</span>
+                    সেটিংস
+                </h3>
+                <div style="margin-bottom: 25px;">
+                    <label style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding: 15px; background: #f8fafc; border-radius: 12px;">
+                        <span style="font-weight: 600; color: var(--secondary-color); display: flex; align-items: center; gap: 10px;">
+                            <span>🌙</span>
+                            ডার্ক মোড
+                        </span>
+                        <input type="checkbox" id="darkModeToggle" ${localStorage.getItem('darkMode') === 'true' ? 'checked' : ''} 
+                               onchange="toggleDarkModeFromModal(this.checked)" style="width: auto;">
+                    </label>
+                    
+                    <label style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding: 15px; background: #f8fafc; border-radius: 12px;">
+                        <span style="font-weight: 600; color: var(--secondary-color); display: flex; align-items: center; gap: 10px;">
+                            <span>🔔</span>
+                            নোটিফিকেশন
+                        </span>
+                        <input type="checkbox" id="notificationToggle" checked style="width: auto;">
+                    </label>
+                    
+                    <label style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding: 15px; background: #f8fafc; border-radius: 12px;">
+                        <span style="font-weight: 600; color: var(--secondary-color); display: flex; align-items: center; gap: 10px;">
+                            <span>💾</span>
+                            অটো সেভ
+                        </span>
+                        <input type="checkbox" id="autoSaveToggle" checked style="width: auto;">
+                    </label>
+                </div>
+                <div style="display: flex; gap: 15px;">
+                    <button onclick="closeModal()" class="btn" style="flex: 1;">
+                        <span>💾</span>
+                        সংরক্ষণ করুন
+                    </button>
+                    <button onclick="resetSettings()" class="btn" style="flex: 1; background: #718096;">
+                        <span>🔄</span>
+                        রিসেট করুন
+                    </button>
+                </div>
+            `;
+            showModal(content);
+        }
+        
+        function toggleDarkModeFromModal(enabled) {
+            isDarkMode = enabled;
+            document.body.classList.toggle('dark-mode', enabled);
+            localStorage.setItem('darkMode', enabled);
+        }
+        
+        function resetSettings() {
+            localStorage.removeItem('darkMode');
+            document.getElementById('darkModeToggle').checked = false;
+            document.getElementById('notificationToggle').checked = true;
+            document.getElementById('autoSaveToggle').checked = true;
+            isDarkMode = false;
+            document.body.classList.remove('dark-mode');
+            showStatus("সেটিংস রিসেট করা হয়েছে", "success");
+        }
+        
+        function showHelp() {
+            const content = `
+                <h3 style="color: var(--secondary-color); margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
+                    <span>❓</span>
+                    সহায়তা কেন্দ্র
+                </h3>
+                <div style="margin-bottom: 25px;">
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 15px;">
+                        <h5 style="color: var(--primary-color); margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+                            <span>📚</span>
+                            কিভাবে ব্যবহার করবেন?
+                        </h5>
+                        <p style="color: #718096; line-height: 1.6;">
+                            ১. প্রথমে ক্লাস নির্বাচন করুন<br>
+                            ২. তারপর বিষয় নির্বাচন করুন<br>
+                            ৩. প্রয়োজনীয় কন্টেন্ট ডাউনলোড করুন<br>
+                            ৪. অ্যাপটি হোমস্ক্রিনে যুক্ত করুন
+                        </p>
+                    </div>
+                    
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 15px;">
+                        <h5 style="color: var(--primary-color); margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+                            <span>🔑</span>
+                            পাসওয়ার্ড সমস্যা?
+                        </h5>
+                        <p style="color: #718096; line-height: 1.6;">
+                            পাসওয়ার্ড ভুলে গেলে লগইন পেজে "পাসওয়ার্ড ভুলে গেছেন?" ক্লিক করুন। আপনার ইমেইলে রিসেট লিঙ্ক পাঠানো হবে।
+                        </p>
+                    </div>
+                    
+                    <div style="background: #f8fafc; padding: 20px; border-radius: 12px; margin-bottom: 15px;">
+                        <h5 style="color: var(--primary-color); margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+                            <span>📱</span>
+                            অ্যাপ ইনস্টলেশন
+                        </h5>
+                        <p style="color: #718096; line-height: 1.6;">
+                            "অ্যাপ ইনস্টল করুন" বাটনে ক্লিক করে হোমস্ক্রিনে যুক্ত করুন। এটি অফলাইন কাজ করবে এবং দ্রুত লোড হবে।
+                        </p>
+                    </div>
+                </div>
+                <button onclick="closeModal()" class="btn">
+                    <span>✅</span>
+                    বুঝেছি
+                </button>
+            `;
+            showModal(content);
+        }
+        
+        function showTerms() {
+            const content = `
+                <h3 style="color: var(--secondary-color); margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
+                    <span>📜</span>
+                    সেবা শর্তাবলী
+                </h3>
+                <div style="max-height: 400px; overflow-y: auto; margin-bottom: 25px;">
+                    <p style="color: #718096; line-height: 1.6; margin-bottom: 15px;">
+                        ১. শিক্ষা সহায়িকা একটি মুক্ত শিক্ষামূলক প্ল্যাটফর্ম।<br>
+                        ২. সকল কন্টেন্ট শুধুমাত্র শিক্ষামূলক উদ্দেশ্যে ব্যবহার করতে হবে।<br>
+                        ৩. বাণিজ্যিক উদ্দেশ্যে কোনো কন্টেন্ট ব্যবহার করা যাবে না।<br>
+                        ৪. ব্যবহারকারীরা নিজ দায়িত্বে কন্টেন্ট ডাউনলোড করবেন।<br>
+                        ৫. আমরা ব্যবহারকারীর ব্যক্তিগত তথ্য সুরক্ষিত রাখি।<br>
+                        ৬. প্ল্যাটফর্মটি নিয়মিত আপডেট করা হবে।<br>
+                        ৭. যে কোনো সময় সেবা শর্তাবলী পরিবর্তন করা যেতে পারে।
+                    </p>
+                </div>
+                <button onclick="closeModal()" class="btn">
+                    <span>✅</span>
+                    সম্মত
+                </button>
+            `;
+            showModal(content);
+        }
+        
+        function showPrivacy() {
+            const content = `
+                <h3 style="color: var(--secondary-color); margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
+                    <span>🔒</span>
+                    গোপনীয়তা নীতি
+                </h3>
+                <div style="max-height: 400px; overflow-y: auto; margin-bottom: 25px;">
+                    <p style="color: #718096; line-height: 1.6; margin-bottom: 15px;">
+                        ১. আমরা আপনার ইমেইল এবং ইউজারনেম সংগ্রহ করি।<br>
+                        ২. আপনার পাসওয়ার্ড এনক্রিপ্টেড অবস্থায় সংরক্ষণ করা হয়।<br>
+                        ৩. আমরা কোনো তৃতীয় পক্ষের সাথে আপনার তথ্য শেয়ার করি না।<br>
+                        ৪. কুকিজ শুধুমাত্র লগইন সেশনের জন্য ব্যবহার করা হয়।<br>
+                        ৫. আপনি যে কোনো সময় আপনার অ্যাকাউন্ট মুছতে পারেন।<br>
+                        ৬. ডেটা নিরাপত্তা আমাদের সর্বোচ্চ অগ্রাধিকার।<br>
+                        ৭. আমাদের সার্ভার নিরাপদ এবং সুরক্ষিত।
+                    </p>
+                </div>
+                <button onclick="closeModal()" class="btn">
+                    <span>✅</span>
+                    বুঝেছি
+                </button>
+            `;
+            showModal(content);
+        }
+        
+        // =================== VALIDATION FUNCTIONS ===================
+        function validateUsername() {
+            const username = document.getElementById('registerUsername').value.trim();
+            const helper = document.getElementById('usernameHelper');
+            
+            if (username.length < 3) {
+                helper.innerHTML = '<span>❌</span> কমপক্ষে ৩ অক্ষর প্রয়োজন';
+                helper.className = 'form-helper invalid';
+                return false;
+            }
+            
+            if (!/^[a-zA-Z0-9]+$/.test(username)) {
+                helper.innerHTML = '<span>❌</span> শুধু অক্ষর ও সংখ্যা অনুমোদিত';
+                helper.className = 'form-helper invalid';
+                return false;
+            }
+            
+            helper.innerHTML = '<span>✅</span> ইউজারনেম গ্রহণযোগ্য';
+            helper.className = 'form-helper valid';
+            return true;
+        }
+        
+        function validateEmail() {
+            const email = document.getElementById('registerEmail').value.trim();
+            const helper = document.getElementById('emailHelper');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (!emailRegex.test(email)) {
+                helper.innerHTML = '<span>❌</span> বৈধ ইমেইল দিন';
+                helper.className = 'form-helper invalid';
+                return false;
+            }
+            
+            helper.innerHTML = '<span>✅</span> ইমেইল গ্রহণযোগ্য';
+            helper.className = 'form-helper valid';
+            return true;
+        }
+        
+        function checkPasswordStrength() {
+            const password = document.getElementById('registerPassword').value;
+            const helper = document.getElementById('passwordHelper');
+            const strengthBar = document.getElementById('passwordStrength');
+            
+            let strength = 0;
+            if (password.length >= 6) strength++;
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            strengthBar.className = 'strength-meter';
+            if (strength <= 1) {
+                strengthBar.classList.add('strength-weak');
+                helper.innerHTML = '<span>❌</span> পাসওয়ার্ড শক্তি: দুর্বল';
+                helper.className = 'form-helper invalid';
+            } else if (strength <= 2) {
+                strengthBar.classList.add('strength-fair');
+                helper.innerHTML = '<span>⚠️</span> পাসওয়ার্ড শক্তি: মধ্যম';
+                helper.className = 'form-helper';
+            } else if (strength <= 3) {
+                strengthBar.classList.add('strength-good');
+                helper.innerHTML = '<span>✅</span> পাসওয়ার্ড শক্তি: ভাল';
+                helper.className = 'form-helper valid';
+            } else {
+                strengthBar.classList.add('strength-strong');
+                helper.innerHTML = '<span>✅</span> পাসওয়ার্ড শক্তি: শক্তিশালী';
+                helper.className = 'form-helper valid';
+            }
+            
+            return strength >= 3;
+        }
+        
+        function confirmPassword() {
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            const helper = document.getElementById('confirmPasswordHelper');
+            
+            if (!confirmPassword) {
+                helper.innerHTML = '<span>ℹ️</span> পাসওয়ার্ড মিলছে কিনা নিশ্চিত করুন';
+                helper.className = 'form-helper';
+                return false;
+            }
+            
+            if (password !== confirmPassword) {
+                helper.innerHTML = '<span>❌</span> পাসওয়ার্ড মিলছে না';
+                helper.className = 'form-helper invalid';
+                return false;
+            }
+            
+            helper.innerHTML = '<span>✅</span> পাসওয়ার্ড মিলেছে';
+            helper.className = 'form-helper valid';
+            return true;
+        }
+        
+        // =================== AUTHENTICATION ===================
+        function setupAuth() {
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    currentUser = user;
+                    showUserInfo(user);
+                    document.getElementById('authSection').style.display = 'none';
+                    document.getElementById('contentSection').style.display = 'block';
+                    document.title = APP_NAME + " - " + user.email;
+                    
+                    loadClasses();
+                    loadFiles();
+                    loadBooks();
+                    loadVideos();
+                    loadMCQs();
+                    
+                    showStatus("লগইন সফল! স্বাগতম!", "success");
+                    
+                    // Update user last login
+                    if (db) {
+                        db.ref('users/' + user.uid).update({
+                            lastLogin: firebase.database.ServerValue.TIMESTAMP
+                        });
+                    }
+                } else {
+                    currentUser = null;
+                    document.getElementById('authSection').style.display = 'block';
+                    document.getElementById('contentSection').style.display = 'none';
+                }
+            });
+        }
+        
+        function showUserInfo(user) {
+            const avatar = document.getElementById('userAvatar');
+            const nameDisplay = document.getElementById('userNameDisplay');
+            const emailDisplay = document.getElementById('userEmailDisplay');
+            const userBadge = document.getElementById('userBadge');
+            
+            emailDisplay.textContent = user.email;
+            
+            if (db) {
+                db.ref('users/' + user.uid).once('value').then(snapshot => {
+                    const userData = snapshot.val();
+                    if (userData && userData.username) {
+                        nameDisplay.textContent = userData.username;
+                        avatar.textContent = userData.username.charAt(0).toUpperCase();
+                        
+                        // Set user badge based on role or activity
+                        if (userData.role === 'admin') {
+                            userBadge.textContent = 'এডমিন';
+                            userBadge.style.background = 'var(--gradient-danger)';
+                        } else if (userData.downloads > 100) {
+                            userBadge.textContent = 'প্রিমিয়াম ব্যবহারকারী';
+                            userBadge.style.background = 'var(--gradient-accent)';
+                        } else if (userData.downloads > 50) {
+                            userBadge.textContent = 'অ্যাক্টিভ ব্যবহারকারী';
+                            userBadge.style.background = 'var(--gradient-success)';
+                        }
+                    } else {
+                        nameDisplay.textContent = user.email.split('@')[0];
+                        avatar.textContent = user.email.charAt(0).toUpperCase();
+                    }
+                });
+            } else {
+                nameDisplay.textContent = user.email.split('@')[0];
+                avatar.textContent = user.email.charAt(0).toUpperCase();
+            }
+        }
+        
+        function loginUser() {
+            const emailUsername = document.getElementById('loginEmailUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            const loginBtn = document.getElementById('loginBtn');
+            
+            if (!emailUsername || !password) {
+                showAuthMessage("ইমেইল/ইউজারনেম এবং পাসওয়ার্ড দিন", "error");
+                return;
+            }
+            
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<span>⏳</span> লগইন হচ্ছে...';
+            
+            const isEmail = emailUsername.includes('@');
+            
+            if (isEmail) {
+                auth.signInWithEmailAndPassword(emailUsername, password)
+                    .then((userCredential) => {
+                        loginBtn.disabled = false;
+                        loginBtn.innerHTML = '<span>🚀</span> লগইন করুন';
+                    })
+                    .catch((error) => {
+                        loginBtn.disabled = false;
+                        loginBtn.innerHTML = '<span>🚀</span> লগইন করুন';
+                        handleAuthError(error);
+                    });
+            } else {
+                db.ref('users').orderByChild('username').equalTo(emailUsername).once('value')
+                    .then((snapshot) => {
+                        if (snapshot.exists()) {
+                            let userEmail = null;
+                            snapshot.forEach((child) => {
+                                userEmail = child.val().email;
+                            });
+                            
+                            if (userEmail) {
+                                return auth.signInWithEmailAndPassword(userEmail, password);
+                            } else {
+                                throw new Error('ইউজারের ইমেইল পাওয়া যায়নি');
+                            }
+                        } else {
+                            throw new Error('এই ইউজারনেমে অ্যাকাউন্ট নেই');
+                        }
+                    })
+                    .then((userCredential) => {
+                        loginBtn.disabled = false;
+                        loginBtn.innerHTML = '<span>🚀</span> লগইন করুন';
+                    })
+                    .catch((error) => {
+                        loginBtn.disabled = false;
+                        loginBtn.innerHTML = '<span>🚀</span> লগইন করুন';
+                        showAuthMessage(error.message, "error");
+                    });
+            }
+        }
+        
+        function registerUser() {
+            const username = document.getElementById('registerUsername').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value.trim();
+            const confirmPassword = document.getElementById('registerConfirmPassword').value.trim();
+            const agreeTerms = document.getElementById('agreeTerms').checked;
+            const registerBtn = document.getElementById('registerBtn');
+            
+            // Validate all fields
+            if (!validateUsername() || !validateEmail() || !checkPasswordStrength() || !confirmPassword()) {
+                showAuthMessage("সব তথ্য সঠিকভাবে পূরণ করুন", "error");
+                return;
+            }
+            
+            if (!agreeTerms) {
+                showAuthMessage("সেবা শর্তাবলী মেনে চলতে হবে", "error");
+                return;
+            }
+            
+            if (!username || !email || !password || !confirmPassword) {
+                showAuthMessage("সব ফিল্ড পূরণ করুন", "error");
+                return;
+            }
+            
+            if (password.length < 6) {
+                showAuthMessage("পাসওয়ার্ড কমপক্ষে ৬ অক্ষর হতে হবে", "error");
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showAuthMessage("পাসওয়ার্ড মিলছে না", "error");
+                return;
+            }
+            
+            if (username.length < 3) {
+                showAuthMessage("ইউজারনেম কমপক্ষে ৩ অক্ষর হতে হবে", "error");
+                return;
+            }
+            
+            registerBtn.disabled = true;
+            registerBtn.innerHTML = '<span>⏳</span> রেজিস্টার হচ্ছে...';
+            
+            // Check if username already exists
+            db.ref('users').orderByChild('username').equalTo(username).once('value')
+                .then((snapshot) => {
+                    if (snapshot.exists()) {
+                        throw new Error('এই ইউজারনেম ইতিমধ্যে ব্যবহার করা হয়েছে');
+                    }
+                    
+                    // Check if email already exists
+                    return db.ref('users').orderByChild('email').equalTo(email).once('value');
+                })
+                .then((snapshot) => {
+                    if (snapshot.exists()) {
+                        throw new Error('এই ইমেইল ইতিমধ্যে ব্যবহার করা হয়েছে');
+                    }
+                    
+                    // Create user with email/password
+                    return auth.createUserWithEmailAndPassword(email, password);
+                })
+                .then((userCredential) => {
+                    // Save user data
+                    return db.ref('users/' + userCredential.user.uid).set({
+                        username: username,
+                        email: email,
+                        createdAt: firebase.database.ServerValue.TIMESTAMP,
+                        role: 'user',
+                        appVersion: APP_VERSION,
+                        downloads: 0,
+                        views: 0,
+                        lastLogin: firebase.database.ServerValue.TIMESTAMP
+                    });
+                })
+                .then(() => {
+                    showAuthMessage("✅ রেজিস্ট্রেশন সফল! স্বয়ংক্রিয় লগইন হয়েছে", "success");
+                    registerBtn.disabled = false;
+                    registerBtn.innerHTML = '<span>✨</span> রেজিস্টার করুন';
+                    
+                    // Clear form
+                    document.getElementById('registerUsername').value = '';
+                    document.getElementById('registerEmail').value = '';
+                    document.getElementById('registerPassword').value = '';
+                    document.getElementById('registerConfirmPassword').value = '';
+                    document.getElementById('agreeTerms').checked = false;
+                    
+                    // Reset validation
+                    document.getElementById('usernameHelper').className = 'form-helper';
+                    document.getElementById('emailHelper').className = 'form-helper';
+                    document.getElementById('passwordHelper').className = 'form-helper';
+                    document.getElementById('confirmPasswordHelper').className = 'form-helper';
+                    document.getElementById('passwordStrength').className = 'strength-meter';
+                })
+                .catch((error) => {
+                    registerBtn.disabled = false;
+                    registerBtn.innerHTML = '<span>✨</span> রেজিস্টার করুন';
+                    handleAuthError(error);
+                });
+        }
+        
+        function handleAuthError(error) {
+            let message = "লগইন ব্যর্থ";
+            switch(error.code) {
+                case 'auth/invalid-email': message = "ভুল ইমেইল ফরম্যাট"; break;
+                case 'auth/user-disabled': message = "অ্যাকাউন্ট নিষ্ক্রিয়"; break;
+                case 'auth/user-not-found': message = "এই ইমেইলে অ্যাকাউন্ট নেই"; break;
+                case 'auth/wrong-password': message = "ভুল পাসওয়ার্ড"; break;
+                case 'auth/email-already-in-use': message = "ইমেইল ইতিমধ্যে ব্যবহার করা হয়েছে"; break;
+                case 'auth/weak-password': message = "পাসওয়ার্ড খুব দুর্বল"; break;
+                case 'auth/too-many-requests': message = "অনেকবার চেষ্টা করেছেন, পরে আবার চেষ্টা করুন"; break;
+                default: message = error.message;
+            }
+            showAuthMessage(message, "error");
+        }
+        
+        function logoutUser() {
+            if (confirm("আপনি কি নিশ্চিত লগআউট করতে চান?")) {
+                auth.signOut()
+                    .then(() => {
+                        showStatus("লগআউট সফল", "info");
+                    })
+                    .catch((error) => {
+                        console.error("Logout error:", error);
+                    });
+            }
+        }
+        
+        function showForgotPassword() {
+            document.getElementById('forgotPasswordModal').style.display = 'block';
+        }
+        
+        function hideForgotPassword() {
+            document.getElementById('forgotPasswordModal').style.display = 'none';
+            document.getElementById('forgotEmailUsername').value = '';
+        }
+        
+        function resetPassword() {
+            const emailUsername = document.getElementById('forgotEmailUsername').value.trim();
+            
+            if (!emailUsername) {
+                showAuthMessage("ইউজারনেম অথবা ইমেইল দিন", "error");
+                return;
+            }
+            
+            const isEmail = emailUsername.includes('@');
+            
+            if (isEmail) {
+                auth.sendPasswordResetEmail(emailUsername)
+                    .then(() => {
+                        showAuthMessage("✅ পাসওয়ার্ড রিসেট লিংক আপনার ইমেইলে পাঠানো হয়েছে", "success");
+                        hideForgotPassword();
+                    })
+                    .catch((error) => {
+                        handleAuthError(error);
+                    });
+            } else {
+                db.ref('users').orderByChild('username').equalTo(emailUsername).once('value')
+                    .then((snapshot) => {
+                        if (snapshot.exists()) {
+                            let userEmail = null;
+                            snapshot.forEach((child) => {
+                                userEmail = child.val().email;
+                            });
+                            
+                            if (userEmail) {
+                                return auth.sendPasswordResetEmail(userEmail);
+                            } else {
+                                throw new Error('ইউজারের ইমেইল পাওয়া যায়নি');
+                            }
+                        } else {
+                            throw new Error('এই ইউজারনেমে অ্যাকাউন্ট নেই');
+                        }
+                    })
+                    .then(() => {
+                        showAuthMessage("✅ পাসওয়ার্ড রিসেট লিংক আপনার ইমেইলে পাঠানো হয়েছে", "success");
+                        hideForgotPassword();
+                    })
+                    .catch((error) => {
+                        showAuthMessage(error.message, "error");
+                    });
+            }
+        }
+        
+        // =================== CONTENT MANAGEMENT ===================
+        function loadClasses() {
+            const classGrid = document.getElementById('classGrid');
+            
+            const classes = [
+                { name: "Class 6", icon: "6️⃣", description: "ষষ্ঠ শ্রেণী", color: "#3498db", count: 120 },
+                { name: "Class 7", icon: "7️⃣", description: "সপ্তম শ্রেণী", color: "#2ecc71", count: 150 },
+                { name: "Class 8", icon: "8️⃣", description: "অষ্টম শ্রেণী", color: "#9b59b6", count: 180 },
+                { name: "Class 9", icon: "9️⃣", description: "নবম শ্রেণী", color: "#e74c3c", count: 200 },
+                { name: "Class 10", icon: "🔟", description: "দশম শ্রেণী", color: "#f39c12", count: 250 }
+            ];
+            
+            classGrid.innerHTML = classes.map(cls => `
+                <div class="class-card" onclick="selectClass('${cls.name}', '${cls.description}')" style="border-color: ${cls.color};">
+                    <div class="class-icon">${cls.icon}</div>
+                    <h3>${cls.name}</h3>
+                    <p>${cls.description}</p>
+                    <div class="class-stats">
+                        <div class="class-stat">
+                            <span>📚</span>
+                            <span>${cls.count}+ কন্টেন্ট</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Update breadcrumb
+            document.getElementById('contentBreadcrumb').innerHTML = `
+                <div class="breadcrumb-item active">
+                    <span>🏠</span>
+                    হোম
+                </div>
+            `;
+        }
+        
+        function selectClass(className, description) {
+            currentClass = className;
+            document.getElementById('classSection').style.display = 'none';
+            document.getElementById('subjectSection').style.display = 'block';
+            document.getElementById('classNameDisplay').innerHTML = `
+                <span>${className.split(' ')[1]}</span>
+                ${className} - ${description}
+            `;
+            
+            // Update breadcrumb
+            document.getElementById('contentBreadcrumb').innerHTML = `
+                <div class="breadcrumb-item" onclick="goBackToClasses()" style="cursor: pointer;">
+                    <span>🏠</span>
+                    হোম
+                </div>
+                <div class="breadcrumb-separator">›</div>
+                <div class="breadcrumb-item active">
+                    <span>${className.split(' ')[1]}</span>
+                    ${className}
+                </div>
+            `;
+            
+            loadSubjects();
+        }
+        
+        function loadSubjects() {
+            const subjectGrid = document.getElementById('subjectGrid');
+            
+            const subjects = [
+                { name: "গণিত", icon: "➕", code: "math", color: "#3498db", count: 45 },
+                { name: "ইংরেজি", icon: "🔤", code: "english", color: "#2ecc71", count: 38 },
+                { name: "বিজ্ঞান", icon: "🔬", code: "science", color: "#e74c3c", count: 52 },
+                { name: "তথ্য ও যোগাযোগ প্রযুক্তি", icon: "💻", code: "ict", color: "#9b59b6", count: 28 },
+                { name: "কৃষি শিক্ষা", icon: "🌱", code: "agriculture", color: "#f39c12", count: 25 },
+            ];
+            
+            subjectGrid.innerHTML = subjects.map(subject => `
+                <div class="subject-card" onclick="selectSubject('${subject.name}', '${subject.code}')" style="border-color: ${subject.color};">
+                    <div class="subject-icon">${subject.icon}</div>
+                    <h3>${subject.name}</h3>
+                    <p>বই, গাইড, নোট এবং MCQ</p>
+                    <div class="subject-count">${subject.count}+ কন্টেন্ট</div>
+                </div>
+            `).join('');
+        }
+        
+        function selectSubject(subjectName, subjectCode) {
+            currentSubject = { name: subjectName, code: subjectCode };
+            document.getElementById('subjectSection').style.display = 'none';
+            document.getElementById('materialsSection').style.display = 'block';
+            document.getElementById('subjectNameDisplay').innerHTML = `
+                <span>${subjectCode === 'math' ? '➕' : subjectCode === 'english' ? '🔤' : subjectCode === 'science' ? '🔬' : subjectCode === 'ict' ? '💻' : subjectCode === 'agriculture' ? '🌱' : '📚'}</span>
+                ${currentClass} - ${subjectName}
+            `;
+            
+            // Update breadcrumb
+            document.getElementById('contentBreadcrumb').innerHTML = `
+                <div class="breadcrumb-item" onclick="goBackToClasses()" style="cursor: pointer;">
+                    <span>🏠</span>
+                    হোম
+                </div>
+                <div class="breadcrumb-separator">›</div>
+                <div class="breadcrumb-item" onclick="goBackToSubjects()" style="cursor: pointer;">
+                    <span>${currentClass.split(' ')[1]}</span>
+                    ${currentClass}
+                </div>
+                <div class="breadcrumb-separator">›</div>
+                <div class="breadcrumb-item active">
+                    <span>${subjectCode === 'math' ? '➕' : subjectCode === 'english' ? '🔤' : subjectCode === 'science' ? '🔬' : subjectCode === 'ict' ? '💻' : subjectCode === 'agriculture' ? '🌱' : '📚'}</span>
+                    ${subjectName}
+                </div>
+            `;
+            
+            loadMaterials();
+        }
+        
+        function loadMaterials() {
+            const materialsList = document.getElementById('materialsList');
+            materialsList.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>কন্টেন্ট লোড হচ্ছে...</p>
+                    <p style="font-size: 0.9rem; color: #718096; margin-top: 10px;">${currentClass} - ${currentSubject.name}</p>
+                </div>
+            `;
+            
+            if (!db) {
+                materialsList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">❌</div>
+                        <h3>ডেটাবেজ সংযোগ নেই</h3>
+                        <p>পৃষ্ঠাটি রিফ্রেশ করুন</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Reset progress
+            document.getElementById('materialProgress').style.width = '0%';
+            document.getElementById('materialCount').textContent = '0';
+            document.getElementById('totalMaterials').textContent = '0';
+            
+            db.ref('materials')
+                .orderByChild('class')
+                .equalTo(currentClass)
+                .once('value')
+                .then((snapshot) => {
+                    let html = '';
+                    let count = 0;
+                    let total = 0;
+                    
+                    if (snapshot.exists()) {
+                        total = snapshot.numChildren();
+                        document.getElementById('totalMaterials').textContent = total;
+                        
+                        snapshot.forEach((child) => {
+                            const data = child.val();
+                            
+                            if (data.subject && data.subject.toLowerCase() === currentSubject.code.toLowerCase()) {
+                                count++;
+                                
+                                // Update progress
+                                const progress = (count / total) * 100;
+                                document.getElementById('materialProgress').style.width = progress + '%';
+                                document.getElementById('materialCount').textContent = count;
+                                
+                                const typeIcon = getTypeIcon(data.type);
+                                const fileUrl = data.link || data.fileUrl || data.downloadUrl;
+                                const linkType = data.linkType || 'other';
+                                const dateStr = data.date || new Date(data.timestamp).toLocaleDateString('bn-BD');
+                                const isFeatured = data.featured || false;
+                                
+                                const materialClass = isFeatured ? 'material-item featured' : 'material-item';
+                                
+                                html += `
+                                    <div class="${materialClass}">
+                                        ${isFeatured ? '<div class="featured-badge" style="position: absolute; top: 15px; right: 15px;">⭐ ফিচার্ড</div>' : ''}
+                                        <h4>
+                                            ${typeIcon} ${data.title || 'শিরোনাম নেই'}
+                                        </h4>
+                                        <div style="margin-bottom: 15px;">
+                                            <span class="material-type ${getTypeClass(data.type)}">
+                                                ${getTypeIcon(data.type)} ${data.type || 'টাইপ নেই'}
+                                            </span>
+                                            ${fileUrl ? `<span style="display: inline-block; background: #e8f6e8; color: #27ae60; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; margin-left: 10px; border: 1px solid #c8e6c9;">✅ লিঙ্ক আছে</span>` : ''}
+                                        </div>
+                                        <p style="margin-top: 10px; color: #444; line-height: 1.6;">${data.description || 'বিস্তারিত বর্ণনা নেই'}</p>
+                                        
+                                        ${data.tags ? `
+                                        <div class="material-tags">
+                                            ${data.tags.split(',').map(tag => `<span class="material-tag">${tag.trim()}</span>`).join('')}
+                                        </div>
+                                        ` : ''}
+                                        
+                                        <div class="material-meta">
+                                            <span>📅 ${dateStr}</span>
+                                            <span>👤 ${data.addedBy || 'এডমিন'}</span>
+                                            <span>👁️ ${data.views || 0}</span>
+                                            <span>⬇️ ${data.downloads || 0}</span>
+                                        </div>
+                                        
+                                        ${fileUrl ? `
+                                        <div class="file-actions">
+                                            <button onclick="openFile('${fileUrl}')" class="open-btn" title="লিঙ্ক ওপেন">
+                                                <span>🔗</span>
+                                                লিঙ্ক ওপেন
+                                            </button>
+                                            <button onclick="downloadFile('${fileUrl}', '${data.title || 'file'}')" class="download-btn" title="ডাউনলোড">
+                                                <span>⬇️</span>
+                                                ডাউনলোড
+                                            </button>
+                                            ${linkType === 'pdf' || linkType === 'doc' ? `
+                                            <button onclick="previewFile('${fileUrl}')" class="preview-btn" title="প্রিভিউ">
+                                                <span>👁️</span>
+                                                প্রিভিউ
+                                            </button>
+                                            ` : ''}
+                                        </div>
+                                        ` : ''}
+                                    </div>
+                                `;
+                            }
+                        });
+                    }
+                    
+                    if (count === 0) {
+                        html = `
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📭</div>
+                                <h3>কোনো কন্টেন্ট পাওয়া যায়নি</h3>
+                                <p>এই বিষয়ের জন্য এখনো কোনো কন্টেন্ট যোগ করা হয়নি।</p>
+                                <button onclick="goBackToSubjects()" class="btn" style="margin-top: 20px;">
+                                    <span>←</span>
+                                    ফিরে যান
+                                </button>
+                            </div>
+                        `;
+                    }
+                    
+                    materialsList.innerHTML = html;
+                    
+                    // Load featured content
+                    loadFeaturedContent();
+                })
+                .catch((error) => {
+                    materialsList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">❌</div>
+                            <h3>ডেটা লোড করতে সমস্যা</h3>
+                            <p>${error.message}</p>
+                        </div>
+                    `;
+                });
+        }
+        
+        function loadFeaturedContent() {
+            if (!db) return;
+            
+            db.ref('materials')
+                .orderByChild('featured')
+                .equalTo(true)
+                .limitToLast(1)
+                .once('value')
+                .then((snapshot) => {
+                    if (snapshot.exists()) {
+                        snapshot.forEach((child) => {
+                            const data = child.val();
+                            document.getElementById('featuredContent').style.display = 'block';
+                            document.getElementById('featuredTitle').textContent = data.title || 'ফিচার্ড কন্টেন্ট';
+                            document.getElementById('featuredDescription').textContent = data.description || 'বিশেষ কন্টেন্ট';
+                        });
+                    }
+                });
+        }
+        
+        function openFeatured() {
+            showStatus("ফিচার্ড কন্টেন্ট লোড হচ্ছে...", "info");
+        }
+        
+        // =================== FILE MANAGEMENT ===================
+        function loadFiles() {
+            const filesList = document.getElementById('filesList');
+            const filesLoading = document.getElementById('filesLoading');
+            
+            filesList.innerHTML = '';
+            filesLoading.style.display = 'block';
+            
+            if (!db) {
+                filesLoading.style.display = 'none';
+                filesList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">❌</div>
+                        <h3>ডেটাবেজ সংযোগ নেই</h3>
+                        <p>পৃষ্ঠাটি রিফ্রেশ করুন</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            db.ref('files').orderByChild('timestamp').once('value')
+                .then((snapshot) => {
+                    filesLoading.style.display = 'none';
+                    
+                    if (!snapshot.exists()) {
+                        filesList.innerHTML = `
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📁</div>
+                                <h3>কোনো ফাইল পাওয়া যায়নি</h3>
+                                <p>এখনো কোনো ফাইল আপলোড করা হয়নি।</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    let html = '';
+                    let index = 1;
+                    allFiles = [];
+                    
+                    snapshot.forEach((child) => {
+                        const data = child.val();
+                        const key = child.key;
+                        allFiles.push({key, ...data});
+                        
+                        const fileTypeBadge = getFileTypeBadge(data.type);
+                        const fileSize = formatFileSize(data.size);
+                        const fileIcon = getFileIcon(data.type);
+                        
+                        html += `
+                            <div class="material-item">
+                                <h4>
+                                    ${fileIcon} ${data.fileName || data.originalName}
+                                </h4>
+                                <div style="margin-bottom: 15px;">
+                                    ${fileTypeBadge}
+                                    <span class="material-type ${getTypeClass(data.type)}">
+                                        ${getTypeIcon(data.type)} ${data.type || 'ফাইল'}
+                                    </span>
+                                </div>
+                                <p style="margin-top: 10px; color: #444; line-height: 1.6;">${data.description || 'বর্ণনা নেই'}</p>
+                                <div class="material-meta">
+                                    <span>📂 ${data.class || 'ক্লাস নেই'}</span>
+                                    <span>📚 ${getSubjectName(data.subject)}</span>
+                                    <span>📊 ${fileSize}</span>
+                                    <span>📅 ${data.uploadDate}</span>
+                                    <span>👤 ${data.uploadedBy || 'অজানা'}</span>
+                                </div>
+                                <div class="file-actions">
+                                    <button onclick="viewFile('${key}')" class="view-btn">
+                                        <span>👁️</span>
+                                        দেখুন
+                                    </button>
+                                    <button onclick="downloadFile('${data.url}', '${data.fileName || data.originalName}')" class="download-btn">
+                                        <span>⬇️</span>
+                                        ডাউনলোড
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                        index++;
+                    });
+                    
+                    filesList.innerHTML = html;
+                })
+                .catch((error) => {
+                    filesLoading.style.display = 'none';
+                    filesList.innerHTML = `
+                        <div class="empty-state">
+                            <div class="empty-state-icon">❌</div>
+                            <h3>ফাইল লোড করতে সমস্যা</h3>
+                            <p>${error.message}</p>
+                        </div>
+                    `;
+                });
+        }
+        
+        function refreshFiles() {
+            showStatus("ফাইল তালিকা রিফ্রেশ করা হচ্ছে...", "info");
+            loadFiles();
+        }
+        
+        function searchFiles() {
+            const searchTerm = document.getElementById('searchFiles').value.toLowerCase();
+            if (!searchTerm) {
+                showStatus("অনুসন্ধান করুন", "info");
+                return;
+            }
+            
+            const filteredFiles = allFiles.filter(file => 
+                (file.fileName && file.fileName.toLowerCase().includes(searchTerm)) ||
+                (file.description && file.description.toLowerCase().includes(searchTerm)) ||
+                (file.subject && file.subject.toLowerCase().includes(searchTerm))
+            );
+            
+            displayFilteredFiles(filteredFiles);
+        }
+        
+        function displayFilteredFiles(files) {
+            const filesList = document.getElementById('filesList');
+            
+            if (files.length === 0) {
+                filesList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🔍</div>
+                        <h3>কোনো ফলাফল পাওয়া যায়নি</h3>
+                        <p>আপনার অনুসন্ধানের সাথে মিলছে না।</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let html = '';
+            files.forEach((data, index) => {
+                const fileTypeBadge = getFileTypeBadge(data.type);
+                const fileSize = formatFileSize(data.size);
+                const fileIcon = getFileIcon(data.type);
+                
+                html += `
+                    <div class="material-item">
+                        <h4>
+                            ${fileIcon} ${data.fileName || data.originalName}
+                        </h4>
+                        <div style="margin-bottom: 15px;">
+                            ${fileTypeBadge}
+                            <span class="material-type ${getTypeClass(data.type)}">
+                                ${getTypeIcon(data.type)} ${data.type || 'ফাইল'}
+                            </span>
+                        </div>
+                        <p style="margin-top: 10px; color: #444; line-height: 1.6;">${data.description || 'বর্ণনা নেই'}</p>
+                        <div class="material-meta">
+                            <span>📂 ${data.class || 'ক্লাস নেই'}</span>
+                            <span>📚 ${getSubjectName(data.subject)}</span>
+                            <span>📊 ${fileSize}</span>
+                            <span>📅 ${data.uploadDate}</span>
+                        </div>
+                        <div class="file-actions">
+                            <button onclick="viewFile('${data.key}')" class="view-btn">
+                                <span>👁️</span>
+                                দেখুন
+                            </button>
+                            <button onclick="downloadFile('${data.url}', '${data.fileName || data.originalName}')" class="download-btn">
+                                <span>⬇️</span>
+                                ডাউনলোড
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            filesList.innerHTML = html;
+            showStatus(`${files.length}টি ফাইল পাওয়া গেছে`, "success");
+        }
+        
+        function showUploadModal() {
+            const content = `
+                <h3 style="color: var(--secondary-color); margin-bottom: 25px; display: flex; align-items: center; gap: 15px;">
+                    <span>📤</span>
+                    ফাইল আপলোড
+                </h3>
+                <div class="form-group">
+                    <label>
+                        <span>📁</span>
+                        ফাইল নির্বাচন করুন:
+                    </label>
+                    <input type="file" id="fileUpload" style="padding: 15px; border: 2px dashed #e2e8f0; border-radius: 12px; cursor: pointer;">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <span>📝</span>
+                        বর্ণনা:
+                    </label>
+                    <textarea id="fileDescription" placeholder="ফাইলের বর্ণনা দিন" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <span>📂</span>
+                        ক্লাস:
+                    </label>
+                    <select id="fileClass" class="filter-select">
+                        <option value="">ক্লাস নির্বাচন করুন</option>
+                        <option value="Class 6">ক্লাস ৬</option>
+                        <option value="Class 7">ক্লাস ৭</option>
+                        <option value="Class 8">ক্লাস ৮</option>
+                        <option value="Class 9">ক্লাস ৯</option>
+                        <option value="Class 10">ক্লাস ১০</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <span>📚</span>
+                        বিষয়:
+                    </label>
+                    <select id="fileSubject" class="filter-select">
+                        <option value="">বিষয় নির্বাচন করুন</option>
+                        <option value="math">গণিত</option>
+                        <option value="english">ইংরেজি</option>
+                        <option value="science">বিজ্ঞান</option>
+                        <option value="ict">ICT</option>
+                        <option value="agriculture">কৃষি</option>
+                    </select>
+                </div>
+                <div style="display: flex; gap: 15px; margin-top: 25px;">
+                    <button onclick="uploadFile()" class="btn" id="uploadBtn" style="flex: 1;">
+                        <span>📤</span>
+                        আপলোড করুন
+                    </button>
+                    <button onclick="closeModal()" class="btn" style="flex: 1; background: #718096;">
+                        <span>❌</span>
+                        বাতিল করুন
+                    </button>
+                </div>
+            `;
+            showModal(content);
+        }
+        
+        function uploadFile() {
+            showStatus("ফাইল আপলোড শীঘ্রই আসবে", "info");
+            closeModal();
+        }
+        
+        function viewFile(key) {
+            showStatus("ফাইল দেখানো হচ্ছে...", "info");
+            
+            db.ref('files/' + key).once('value')
+                .then((snapshot) => {
+                    const data = snapshot.val();
+                    if (data && data.url) {
+                        window.open(data.url, '_blank');
+                        
+                        // Increment view count
+                        if (currentUser) {
+                            db.ref('users/' + currentUser.uid).transaction(user => {
+                                if (user) {
+                                    user.views = (user.views || 0) + 1;
+                                }
+                                return user;
+                            });
+                        }
+                    } else {
+                        showStatus("ফাইল লিঙ্ক পাওয়া যায়নি", "error");
+                    }
+                })
+                .catch((error) => {
+                    showStatus("ফাইল লোড ব্যর্থ", "error");
+                });
+        }
+        
+        // =================== BOOKS & VIDEOS ===================
+        function loadBooks() {
+            const booksList = document.getElementById('booksList');
+            booksList.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>বই লোড হচ্ছে...</p>
+                </div>
+            `;
+            
+            if (!db) return;
+            
+            db.ref('materials')
+                .orderByChild('type')
+                .once('value')
+                .then((snapshot) => {
+                    let html = '';
+                    let count = 0;
+                    allBooks = [];
+                    
+                    if (snapshot.exists()) {
+                        snapshot.forEach((child) => {
+                            const data = child.val();
+                            
+                            if (data.type === 'বই' || data.type === 'গাইড') {
+                                count++;
+                                allBooks.push(data);
+                                const fileUrl = data.link || data.fileUrl;
+                                const rating = data.rating || 4.5;
+                                
+                                html += `
+                                    <div class="material-item">
+                                        <h4>
+                                            📚 ${data.title || 'বই'}
+                                        </h4>
+                                        <div style="margin-bottom: 15px;">
+                                            <span class="material-type ${getTypeClass(data.type)}">
+                                                ${getTypeIcon(data.type)} ${data.type}
+                                            </span>
+                                            <span style="display: inline-block; background: #f0f7ff; color: #3498db; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; margin-left: 10px; border: 1px solid #bbdefb;">
+                                                ${data.class || 'ক্লাস নেই'}
+                                            </span>
+                                            <span style="display: inline-block; background: #fffaf0; color: #f39c12; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; margin-left: 10px; border: 1px solid #ffe0b2;">
+                                                ${getSubjectName(data.subject)}
+                                            </span>
+                                        </div>
+                                        <div class="rating">
+                                            ${'★'.repeat(Math.floor(rating))}${'☆'.repeat(5 - Math.floor(rating))}
+                                            <span style="color: #718096; margin-left: 10px; font-size: 0.9rem;">(${rating})</span>
+                                        </div>
+                                        <p style="margin-top: 10px; color: #444; line-height: 1.6;">${data.description || 'বিস্তারিত বর্ণনা নেই'}</p>
+                                        ${fileUrl ? `
+                                        <div class="file-actions">
+                                            <button onclick="openFile('${fileUrl}')" class="open-btn">
+                                                <span>📖</span>
+                                                পড়ুন
+                                            </button>
+                                            <button onclick="downloadFile('${fileUrl}', '${data.title || 'book'}')" class="download-btn">
+                                                <span>⬇️</span>
+                                                ডাউনলোড
+                                            </button>
+                                            <button onclick="addToLibrary('${child.key}')" class="preview-btn">
+                                                <span>➕</span>
+                                                লাইব্রেরিতে যোগ করুন
+                                            </button>
+                                        </div>
+                                        ` : ''}
+                                    </div>
+                                `;
+                            }
+                        });
+                    }
+                    
+                    if (count === 0) {
+                        html = `
+                            <div class="empty-state">
+                                <div class="empty-state-icon">📚</div>
+                                <h3>কোনো বই পাওয়া যায়নি</h3>
+                                <p>এখনো কোনো বই আপলোড করা হয়নি।</p>
+                            </div>
+                        `;
+                    }
+                    
+                    booksList.innerHTML = html;
+                });
+        }
+        
+        function loadVideos() {
+            const videosList = document.getElementById('videosList');
+            videosList.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>ভিডিও লোড হচ্ছে...</p>
+                </div>
+            `;
+            
+            if (!db) return;
+            
+            db.ref('materials')
+                .orderByChild('type')
+                .once('value')
+                .then((snapshot) => {
+                    let html = '';
+                    let count = 0;
+                    allVideos = [];
+                    
+                    if (snapshot.exists()) {
+                        snapshot.forEach((child) => {
+                            const data = child.val();
+                            
+                            if (data.type === 'ভিডিও' || data.linkType === 'youtube') {
+                                count++;
+                                allVideos.push(data);
+                                const videoUrl = data.link || data.fileUrl;
+                                const duration = data.duration || '10:00';
+                                
+                                html += `
+                                    <div class="material-item">
+                                        <h4>
+                                            🎬 ${data.title || 'ভিডিও'}
+                                        </h4>
+                                        <div style="margin-bottom: 15px;">
+                                            <span class="material-type video">
+                                                ${getTypeIcon('ভিডিও')} ভিডিও
+                                            </span>
+                                            <span style="display: inline-block; background: #f0f7ff; color: #3498db; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; margin-left: 10px; border: 1px solid #bbdefb;">
+                                                ${data.class || 'ক্লাস নেই'}
+                                            </span>
+                                            <span style="display: inline-block; background: #fffaf0; color: #f39c12; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; margin-left: 10px; border: 1px solid #ffe0b2;">
+                                                ⏱️ ${duration}
+                                            </span>
+                                        </div>
+                                        <p style="margin-top: 10px; color: #444; line-height: 1.6;">${data.description || 'বিস্তারিত বর্ণনা নেই'}</p>
+                                        ${videoUrl ? `
+                                        <div class="file-actions">
+                                            <button onclick="openFile('${videoUrl}')" class="open-btn">
+                                                <span>▶️</span>
+                                                ভিডিও দেখুন
+                                            </button>
+                                            <button onclick="addToPlaylist('${child.key}')" class="preview-btn">
+                                                <span>➕</span>
+                                                প্লেলিস্টে যোগ করুন
+                                            </button>
+                                        </div>
+                                        ` : ''}
+                                    </div>
+                                `;
+                            }
+                        });
+                    }
+                    
+                    if (count === 0) {
+                        html = `
+                            <div class="empty-state">
+                                <div class="empty-state-icon">🎬</div>
+                                <h3>কোনো ভিডিও পাওয়া যায়নি</h3>
+                                <p>এখনো কোনো ভিডিও আপলোড করা হয়নি।</p>
+                            </div>
+                        `;
+                    }
+                    
+                    videosList.innerHTML = html;
+                });
+        }
+        
+        function loadMCQs() {
+            const mcqList = document.getElementById('mcqList');
+            mcqList.innerHTML = `
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p>MCQ প্রশ্ন লোড হচ্ছে...</p>
+                </div>
+            `;
+            
+            if (!db) return;
+            
+            db.ref('materials')
+                .orderByChild('type')
+                .once('value')
+                .then((snapshot) => {
+                    let html = '';
+                    let count = 0;
+                    allMCQs = [];
+                    
+                    if (snapshot.exists()) {
+                        snapshot.forEach((child) => {
+                            const data = child.val();
+                            
+                            if (data.type === 'MCQ' || data.type === 'প্রশ্ন') {
+                                count++;
+                                allMCQs.push(data);
+                                const questionCount = data.questionCount || 50;
+                                const difficulty = data.difficulty || 'মধ্যম';
+                                
+                                html += `
+                                    <div class="material-item">
+                                        <h4>
+                                            🔠 ${data.title || 'MCQ প্রশ্নব্যাংক'}
+                                        </h4>
+                                        <div style="margin-bottom: 15px;">
+                                            <span class="material-type question">
+                                                ${getTypeIcon('MCQ')} MCQ
+                                            </span>
+                                            <span style="display: inline-block; background: #f0f7ff; color: #3498db; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; margin-left: 10px; border: 1px solid #bbdefb;">
+                                                ${data.class || 'ক্লাস নেই'}
+                                            </span>
+                                            <span style="display: inline-block; background: #e8f6e8; color: #27ae60; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; margin-left: 10px; border: 1px solid #c8e6c9;">
+                                                ❓ ${questionCount} প্রশ্ন
+                                            </span>
+                                            <span style="display: inline-block; background: ${difficulty === 'কঠিন' ? '#ffebee' : difficulty === 'মধ্যম' ? '#fff3e0' : '#e8f5e9'}; 
+                                                  color: ${difficulty === 'কঠিন' ? '#d32f2f' : difficulty === 'মধ্যম' ? '#f57c00' : '#388e3c'}; 
+                                                  padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; margin-left: 10px; 
+                                                  border: 1px solid ${difficulty === 'কঠিন' ? '#ffcdd2' : difficulty === 'মধ্যম' ? '#ffe0b2' : '#c8e6c9'};">
+                                                ${difficulty}
+                                            </span>
+                                        </div>
+                                        <p style="margin-top: 10px; color: #444; line-height: 1.6;">${data.description || 'বিস্তারিত বর্ণনা নেই'}</p>
+                                        ${data.link ? `
+                                        <div class="file-actions">
+                                            <button onclick="startMCQ('${child.key}')" class="btn-success" style="padding: 12px 24px;">
+                                                <span>🚀</span>
+                                                প্রশ্ন শুরু করুন
+                                            </button>
+                                            <button onclick="downloadFile('${data.link}', '${data.title || 'mcq'}')" class="download-btn">
+                                                <span>⬇️</span>
+                                                ডাউনলোড
+                                            </button>
+                                            <button onclick="viewMCQ('${child.key}')" class="view-btn">
+                                                <span>👁️</span>
+                                                দেখুন
+                                            </button>
+                                        </div>
+                                        ` : ''}
+                                    </div>
+                                `;
+                            }
+                        });
+                    }
+                    
+                    if (count === 0) {
+                        html = `
+                            <div class="empty-state">
+                                <div class="empty-state-icon">🔠</div>
+                                <h3>কোনো MCQ প্রশ্ন পাওয়া যায়নি</h3>
+                                <p>এখনো কোনো MCQ প্রশ্নব্যাংক আপলোড করা হয়নি।</p>
+                            </div>
+                        `;
+                    }
+                    
+                    mcqList.innerHTML = html;
+                });
+        }
+        
+        function startQuiz() {
+            showStatus("কুইজ ফিচার শীঘ্রই আসবে", "info");
+        }
+        
+        function downloadMCQ() {
+            showStatus("MCQ ডাউনলোড শীঘ্রই আসবে", "info");
+        }
+        
+        function startMCQ(key) {
+            showStatus("MCQ প্রশ্ন শুরু হচ্ছে...", "info");
+        }
+        
+        function viewMCQ(key) {
+            showStatus("MCQ দেখানো হচ্ছে...", "info");
+        }
+        
+        function addToLibrary(key) {
+            showStatus("লাইব্রেরিতে যোগ করা হয়েছে", "success");
+        }
+        
+        function addToPlaylist(key) {
+            showStatus("প্লেলিস্টে যোগ করা হয়েছে", "success");
+        }
+        
+        function showBookCategories() {
+            showStatus("বই ক্যাটাগরি শীঘ্রই আসবে", "info");
+        }
+        
+        function showRecommendations() {
+            showStatus("সুপারিশ শীঘ্রই আসবে", "info");
+        }
+        
+        function showPlaylists() {
+            showStatus("প্লেলিস্ট শীঘ্রই আসবে", "info");
+        }
+        
+        function showVideoCategories() {
+            showStatus("ভিডিও ক্যাটাগরি শীঘ্রই আসবে", "info");
+        }
+        
+        // =================== HELPER FUNCTIONS ===================
+        function getTypeIcon(type) {
+            switch(type) {
+                case 'বই': return '📚';
+                case 'গাইড': return '📖';
+                case 'নোট': return '📝';
+                case 'ভিডিও': return '🎬';
+                case 'পিডিএফ': return '📄';
+                case 'প্রশ্ন': return '❓';
+                case 'ছবি': return '🖼️';
+                case 'MCQ': return '🔠';
+                default: return '📁';
+            }
+        }
+        
+        function getTypeClass(type) {
+            const types = {
+                'বই': 'book',
+                'গাইড': 'guide',
+                'নোট': 'note',
+                'ভিডিও': 'video',
+                'পিডিএফ': 'pdf',
+                'প্রশ্ন': 'question',
+                'ছবি': 'image',
+                'MCQ': 'question'
+            };
+            return types[type] || 'book';
+        }
+        
+        function getFileIcon(type) {
+            switch(type) {
+                case 'pdf': return '📄';
+                case 'image': return '🖼️';
+                case 'video': return '🎬';
+                case 'doc': return '📝';
+                case 'excel': return '📊';
+                case 'ppt': return '📽️';
+                case 'zip': return '📦';
+                default: return '📁';
+            }
+        }
+        
+        function getFileTypeBadge(type) {
+            const badges = {
+                'pdf': '<span class="file-type-badge file-type-pdf">📄 PDF</span>',
+                'image': '<span class="file-type-badge file-type-image">🖼️ IMAGE</span>',
+                'video': '<span class="file-type-badge file-type-video">🎬 VIDEO</span>',
+                'doc': '<span class="file-type-badge file-type-doc">📝 DOC</span>',
+                'excel': '<span class="file-type-badge file-type-doc">📊 EXCEL</span>',
+                'ppt': '<span class="file-type-badge file-type-doc">📽️ PPT</span>',
+                'zip': '<span class="file-type-badge file-type-zip">📦 ZIP</span>',
+                'other': '<span class="file-type-badge file-type-other">📁 FILE</span>'
+            };
+            return badges[type] || badges['other'];
+        }
+        
+        function getSubjectName(subjectCode) {
+            const subjects = {
+                'math': 'গণিত',
+                'english': 'ইংরেজি',
+                'science': 'বিজ্ঞান',
+                'ict': 'ICT',
+                'agriculture': 'কৃষি শিক্ষা',
+            };
+            return subjects[subjectCode] || subjectCode || 'বিষয় নেই';
+        }
+        
+        function formatFileSize(bytes) {
+            if (!bytes) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        function openFile(url) {
+            if (url) {
+                window.open(url, '_blank');
+                
+                // Increment download count for user
+                if (currentUser) {
+                    db.ref('users/' + currentUser.uid).transaction(user => {
+                        if (user) {
+                            user.downloads = (user.downloads || 0) + 1;
+                        }
+                        return user;
+                    });
+                }
+            } else {
+                showStatus("ফাইল লিঙ্ক পাওয়া যায়নি", "error");
+            }
+        }
+        
+        function previewFile(url) {
+            if (url) {
+                window.open(url, '_blank', 'width=800,height=600');
+            } else {
+                showStatus("প্রিভিউ লিঙ্ক পাওয়া যায়নি", "error");
+            }
+        }
+        
+        function downloadFile(url, fileName) {
+            if (url) {
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = fileName || 'download';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                showStatus("ডাউনলোড শুরু হয়েছে", "success");
+                
+                // Increment download count for user
+                if (currentUser) {
+                    db.ref('users/' + currentUser.uid).transaction(user => {
+                        if (user) {
+                            user.downloads = (user.downloads || 0) + 1;
+                        }
+                        return user;
+                    });
+                }
+            } else {
+                showStatus("ডাউনলোড লিঙ্ক পাওয়া যায়নি", "error");
+            }
+        }
+        
+        // =================== SEARCH AND FILTER ===================
+        function searchContent() {
+            const searchTerm = document.getElementById('searchContent').value.toLowerCase();
+            if (!searchTerm) {
+                showStatus("অনুসন্ধান করুন", "info");
+                return;
+            }
+            
+            showStatus(`"${searchTerm}" অনুসন্ধান করা হচ্ছে...`, "info");
+        }
+        
+        function filterContent() {
+            const type = document.getElementById('contentTypeFilter').value;
+            const cls = document.getElementById('contentClassFilter').value;
+            const subject = document.getElementById('contentSubjectFilter').value;
+            const sort = document.getElementById('contentSort').value;
+            
+            showStatus("ফিল্টার প্রয়োগ করা হচ্ছে...", "info");
+        }
+        
+        // =================== NAVIGATION ===================
+        function goBackToClasses() {
+            document.getElementById('classSection').style.display = 'block';
+            document.getElementById('subjectSection').style.display = 'none';
+            document.getElementById('materialsSection').style.display = 'none';
+            currentClass = null;
+            
+            // Update breadcrumb
+            document.getElementById('contentBreadcrumb').innerHTML = `
+                <div class="breadcrumb-item active">
+                    <span>🏠</span>
+                    হোম
+                </div>
+            `;
+        }
+        
+        function goBackToSubjects() {
+            document.getElementById('subjectSection').style.display = 'block';
+            document.getElementById('materialsSection').style.display = 'none';
+            currentSubject = null;
+            
+            // Update breadcrumb
+            document.getElementById('contentBreadcrumb').innerHTML = `
+                <div class="breadcrumb-item" onclick="goBackToClasses()" style="cursor: pointer;">
+                    <span>🏠</span>
+                    হোম
+                </div>
+                <div class="breadcrumb-separator">›</div>
+                <div class="breadcrumb-item active">
+                    <span>${currentClass.split(' ')[1]}</span>
+                    ${currentClass}
+                </div>
+            `;
+        }
+        
+        function switchTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Remove active class from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab');
+            tabButtons.forEach(button => button.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+            
+            // Load data if needed
+            if (tabName === 'fileTab') {
+                loadFiles();
+            } else if (tabName === 'bookTab') {
+                loadBooks();
+            } else if (tabName === 'videoTab') {
+                loadVideos();
+            } else if (tabName === 'mcqTab') {
+                loadMCQs();
+            } else if (tabName === 'contentTab') {
+                // Reset to class selection if coming from other tabs
+                if (!currentClass) {
+                    document.getElementById('classSection').style.display = 'block';
+                    document.getElementById('subjectSection').style.display = 'none';
+                    document.getElementById('materialsSection').style.display = 'none';
+                }
+            }
+        }
+        
+        function showAuthForm(formType) {
+            const loginTab = document.getElementById('loginTab');
+            const registerTab = document.getElementById('registerTab');
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            
+            loginTab.classList.remove('active');
+            registerTab.classList.remove('active');
+            loginForm.classList.remove('active');
+            registerForm.classList.remove('active');
+            
+            if (formType === 'login') {
+                loginTab.classList.add('active');
+                loginForm.classList.add('active');
+            } else {
+                registerTab.classList.add('active');
+                registerForm.classList.add('active');
+            }
+            
+            document.getElementById('authMessage').style.display = 'none';
+        }
+        
+        // =================== MESSAGE FUNCTIONS ===================
+        function showStatus(message, type) {
+            const statusDiv = document.getElementById('statusMessage');
+            const statusIcon = document.getElementById('statusIcon');
+            const statusText = document.getElementById('statusText');
+            
+            statusText.textContent = message;
+            
+            // Set icon based on type
+            switch(type) {
+                case 'success': statusIcon.textContent = '✅'; break;
+                case 'error': statusIcon.textContent = '❌'; break;
+                case 'warning': statusIcon.textContent = '⚠️'; break;
+                case 'info': statusIcon.textContent = 'ℹ️'; break;
+                default: statusIcon.textContent = '💡';
+            }
+            
+            statusDiv.className = `status-message status-${type}`;
+            statusDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                statusDiv.style.display = 'none';
+            }, 3000);
+        }
+        
+        function showAuthMessage(message, type) {
+            const msgDiv = document.getElementById('authMessage');
+            msgDiv.textContent = message;
+            msgDiv.style.display = 'block';
+            
+            if (type === 'error') {
+                msgDiv.style.background = 'linear-gradient(135deg, rgba(255, 230, 230, 0.9), rgba(255, 204, 204, 0.9))';
+                msgDiv.style.color = '#d32f2f';
+                msgDiv.style.border = '2px solid #ffcdd2';
+            } else if (type === 'success') {
+                msgDiv.style.background = 'linear-gradient(135deg, rgba(230, 255, 230, 0.9), rgba(204, 255, 204, 0.9))';
+                msgDiv.style.color = '#2e7d32';
+                msgDiv.style.border = '2px solid #c8e6c9';
+            }
+            
+            setTimeout(() => {
+                msgDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        // =================== PWA FUNCTIONS ===================
+        function setupServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js?v=' + APP_VERSION)
+                    .then(registration => {
+                        console.log('✅ Service Worker registered:', registration.scope);
+                        
+                        setInterval(() => {
+                            registration.update();
+                        }, 60 * 60 * 1000);
+                    })
+                    .catch(error => {
+                        console.log('❌ Service Worker registration failed:', error);
+                    });
+            }
+            
+            checkAppInstalled();
+            
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                
+                const installBtn = document.getElementById('installButton');
+                if (installBtn) {
+                    installBtn.style.display = 'inline-flex';
+                    installBtn.onclick = () => installApp();
+                }
+            });
+            
+            window.addEventListener('appinstalled', () => {
+                isAppInstalled = true;
+                document.getElementById('pwaStatus').style.display = 'block';
+                showStatus("অ্যাপ সফলভাবে ইনস্টল হয়েছে! 🎉", "success");
+                
+                const installBtn = document.getElementById('installButton');
+                if (installBtn) {
+                    installBtn.innerHTML = '<span>✅</span> ইনস্টল করা হয়েছে';
+                    installBtn.disabled = true;
+                }
+            });
+        }
+        
+        function checkAppInstalled() {
+            const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+            isAppInstalled = isStandalone || window.navigator.standalone;
+            
+            if (isAppInstalled) {
+                document.getElementById('pwaStatus').style.display = 'block';
+                const installBtn = document.getElementById('installButton');
+                if (installBtn) {
+                    installBtn.innerHTML = '<span>✅</span> ইনস্টল করা হয়েছে';
+                    installBtn.disabled = true;
+                }
+            }
+        }
+        
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('✅ User accepted install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+        
+        // =================== INITIALIZATION ===================
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeFirebase();
+            
+            showAuthForm('login');
+            
+            const searchContent = document.getElementById('searchContent');
+            if (searchContent) {
+                searchContent.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        searchContent();
+                    }
+                });
+            }
+            
+            const searchFiles = document.getElementById('searchFiles');
+            if (searchFiles) {
+                searchFiles.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        searchFiles();
+                    }
+                });
+            }
+            
+            document.getElementById('loginPassword').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    loginUser();
+                }
+            });
+            
+            document.getElementById('registerConfirmPassword').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    registerUser();
+                }
+            });
+            
+            // Check for dark mode preference
+            const darkModePreference = localStorage.getItem('darkMode');
+            if (darkModePreference === 'true') {
+                isDarkMode = true;
+                document.body.classList.add('dark-mode');
+            }
+            
+            // Add animation to cards on load
+            setTimeout(() => {
+                const cards = document.querySelectorAll('.class-card, .subject-card, .material-item');
+                cards.forEach((card, index) => {
+                    card.style.animationDelay = `${index * 0.1}s`;
+                    card.style.animation = 'fadeIn 0.5s ease';
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>
