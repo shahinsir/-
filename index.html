@@ -2842,9 +2842,6 @@
                 { name: "বিজ্ঞান", icon: "🔬", code: "science", color: "#e74c3c", count: 52 },
                 { name: "তথ্য ও যোগাযোগ প্রযুক্তি", icon: "💻", code: "ict", color: "#9b59b6", count: 28 },
                 { name: "কৃষি শিক্ষা", icon: "🌱", code: "agriculture", color: "#f39c12", count: 25 },
-                { name: "বাংলা", icon: "📖", code: "bangla", color: "#1abc9c", count: 42 },
-                { name: "ইসলাম শিক্ষা", icon: "🕌", code: "islam", color: "#34495e", count: 30 },
-                { name: "সমাজ বিজ্ঞান", icon: "🌍", code: "social", color: "#d35400", count: 35 }
             ];
             
             subjectGrid.innerHTML = subjects.map(subject => `
@@ -3672,10 +3669,7 @@
                 'english': 'ইংরেজি',
                 'science': 'বিজ্ঞান',
                 'ict': 'ICT',
-                'agriculture': 'কৃষি',
-                'bangla': 'বাংলা',
-                'islam': 'ইসলাম শিক্ষা',
-                'social': 'সমাজ বিজ্ঞান'
+                'agriculture': 'কৃষি শিক্ষা',
             };
             return subjects[subjectCode] || subjectCode || 'বিষয় নেই';
         }
@@ -4017,3 +4011,4 @@
     </script>
 </body>
 </html>
+
